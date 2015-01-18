@@ -1,0 +1,1 @@
+This folder is meant to hold code generation code (Max)
