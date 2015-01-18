@@ -6,7 +6,9 @@
             <code-name-base>com.codeigniter.netbeans</code-name-base>
             <standalone/>
             <module-dependencies/>
-            <public-packages/>
+            <public-packages>
+                <package>com.codeigniter.netbeans</package>
+            </public-packages>
         </data>
     </configuration>
 </project>
