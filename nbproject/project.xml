@@ -5,9 +5,32 @@
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
             <code-name-base>com.codeigniter.netbeans</code-name-base>
             <standalone/>
-            <module-dependencies/>
+            <module-dependencies>
+                <dependency>
+                    <code-name-base>org.openide.awt</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>7.62.1</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.openide.util</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>8.39.1</specification-version>
+                    </run-dependency>
+                </dependency>
+            </module-dependencies>
             <public-packages>
                 <package>com.codeigniter.netbeans</package>
+                <package>com.codeigniter.netbeans.completer</package>
+                <package>com.codeigniter.netbeans.generator</package>
+                <package>com.codeigniter.netbeans.manager</package>
+                <package>com.codeigniter.netbeans.misc</package>
+                <package>com.codeigniter.netbeans.navigator</package>
+                <package>com.codeigniter.netbeans.starter</package>
             </public-packages>
         </data>
     </configuration>
