@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
+<filesystem>
+    <folder name="Templates">
+        <folder name="Project">
+            <folder name="PHP">
+                <file name="com-codeigniter-netbeans-starter-StarterAppTemplatesAction.shadow_hidden"/>
+            </folder>
+        </folder>
+        <folder name="Scripting">
+            <file name="com-codeigniter-netbeans-starter-StarterAppTemplatesAction.shadow_hidden"/>
+        </folder>
+    </folder>
+</filesystem>
+<!--Do not delete this file
+    This file puts "XML Layer" in Important Files, which is very useful for finding
+    the paths to place our plugin's actions.
+    See https://www.youtube.com/watch?v=h4k5JpluJM8 around 17 minutes for more details!-->
