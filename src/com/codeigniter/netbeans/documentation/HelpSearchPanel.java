@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.codeigniter.netbeans.misc;
+package com.codeigniter.netbeans.documentation;
 
 import java.net.URL;
 import java.net.URLEncoder;
@@ -34,7 +34,7 @@ public class HelpSearchPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/codeigniter/netbeans/misc/logo.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/codeigniter/netbeans/documentation/logo.png"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(HelpSearchPanel.class, "HelpSearchPanel.jLabel1.text")); // NOI18N
 
         jTextField1.setText(org.openide.util.NbBundle.getMessage(HelpSearchPanel.class, "HelpSearchPanel.jTextField1.text")); // NOI18N

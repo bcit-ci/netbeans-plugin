@@ -1,9 +1,9 @@
 /*
  * This class handled the codeIgniter "Help Search" action.
  */
-package com.codeigniter.netbeans.misc;
+package com.codeigniter.netbeans.documentation;
 
-import com.codeigniter.netbeans.misc.HelpSearchPanel;
+import com.codeigniter.netbeans.documentation.HelpSearchPanel;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
