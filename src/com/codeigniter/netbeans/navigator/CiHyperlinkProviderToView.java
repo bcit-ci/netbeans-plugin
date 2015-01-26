@@ -8,6 +8,7 @@ package com.codeigniter.netbeans.navigator;
 import javax.swing.text.Document;
 import org.netbeans.lib.editor.hyperlink.spi.HyperlinkType;
 import org.netbeans.modules.csl.api.UiUtils;
+import org.netbeans.modules.editor.NbEditorUtilities;
 import org.openide.filesystems.FileObject;
 
 /**
@@ -16,17 +17,30 @@ import org.openide.filesystems.FileObject;
  */
 public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
     
+    private static final String VIEW_PATH = "application/views/";
     private FileObject view;
     
     @Override
     public boolean isHyperlinkPoint(Document doc, int offset, HyperlinkType ht) {
-        String token = getStringTokenString(doc, offset);
-        if (token == null) {
+        view = null;
+        FileObject docObject = NbEditorUtilities.getFileObject(doc);
+
+        if (docObject == null) {
             return false;
         }
         
-        FileObject parent;
-        // Get Path
+        String extendedPath = getStringTokenString(doc, offset);
+        if (extendedPath == null) {
+            return false;
+        }
+        extendedPath = VIEW_PATH + extendedPath;
+        
+        FileObject parent = getCiRoot(docObject);
+        if (parent == null) {
+            return false;
+        }
+        view = parent.getFileObject(extendedPath);
+        
         return true;
     }
 
