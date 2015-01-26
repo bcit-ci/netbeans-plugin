@@ -20,19 +20,14 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
     
     @Override
     public boolean isHyperlinkPoint(Document doc, int offset, HyperlinkType ht) {
-        String token = getTokenString(doc, offset);
+        String token = getStringTokenString(doc, offset);
         if (token == null) {
             return false;
         }
         
         FileObject parent;
         // Get Path
-        
-    }
-
-    @Override
-    public int[] getHyperlinkSpan(Document doc, int offset, HyperlinkType ht) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return true;
     }
 
     @Override

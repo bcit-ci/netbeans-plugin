@@ -22,6 +22,9 @@ import org.netbeans.lib.editor.hyperlink.spi.HyperlinkType;
  */
 public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
    
+    private int targetStart;
+    private int targetEnd;
+    
     @Override
     public Set<HyperlinkType> getSupportedHyperlinkTypes() {
         return EnumSet.of(HyperlinkType.GO_TO_DECLARATION);
@@ -33,13 +36,21 @@ public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
         return null;
     }
     
+    @Override
+    public int[] getHyperlinkSpan(Document doc, int offset, HyperlinkType ht) {
+        if ((targetStart != 0) && (targetEnd != 0)) {
+            return new int[]{targetStart, targetEnd};
+        }
+        return null;
+    }
+
     /**
      * Get the TokenSequence for the full documentation
      *
      * @param doc document
      * @return tokens
      */
-    public static TokenSequence<PHPTokenId> getTokenSequence(Document doc) {
+    public TokenSequence<PHPTokenId> getTokenSequence(Document doc) {
         AbstractDocument absDoc = (AbstractDocument) doc;
         absDoc.readLock();
         TokenSequence<PHPTokenId> tokens;
@@ -59,28 +70,42 @@ public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
      * @param offset offset in document
      * @return target
      */
-    public static String getTokenString(Document doc, int offset) {
-        TokenSequence<PHPTokenId> ts = getTokenSequence(doc);
-        if (ts == null) {
+    public String getStringTokenString(Document doc, int offset) {
+        TokenSequence<PHPTokenId>tokens = getTokenSequence(doc);
+        if (tokens == null) {
             return null;
         }
-        ts.move(offset);
-        ts.moveNext();
-        int newOffset = ts.offset();
-
-        Token<PHPTokenId> token = ts.token();
+        
+        resetLengthValue();
+        
+        tokens.move(offset);
+        tokens.moveNext();
+        int newOffset = tokens.offset();
+        
+        Token<PHPTokenId> token = tokens.token();
         
         String target = token.text().toString();
         PHPTokenId id = token.id();
         if (id == PHPTokenId.PHP_CONSTANT_ENCAPSED_STRING) {
             if (target.length() > 2) {
                 target = target.substring(1, target.length() - 1);
+                targetStart = newOffset + 1;
+                targetEnd = targetStart + target.length();
             } else {
                 target = null;
             }
         } else {
             target = null;
         }
+        
         return target;
+    }
+    
+    /**
+     * Rest the targetStart/End value
+     */
+    private void resetLengthValue() {
+        targetStart = 0;
+        targetEnd = 0;
     }
 }
