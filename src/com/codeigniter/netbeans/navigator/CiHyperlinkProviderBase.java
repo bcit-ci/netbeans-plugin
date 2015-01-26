@@ -34,12 +34,6 @@ public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
     public Set<HyperlinkType> getSupportedHyperlinkTypes() {
         return EnumSet.of(HyperlinkType.GO_TO_DECLARATION);
     }
-
-    @Override
-    public String getTooltipText(Document doc, int offset, HyperlinkType ht) {
-        //TODO: A general Tooltip
-        return null;
-    }
     
     @Override
     public int[] getHyperlinkSpan(Document doc, int offset, HyperlinkType ht) {

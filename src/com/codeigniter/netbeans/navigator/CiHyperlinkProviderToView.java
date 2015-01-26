@@ -45,6 +45,12 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
     }
 
     @Override
+    public String getTooltipText(Document doc, int offset, HyperlinkType ht) {
+        //TODO: Implement a Tooltip based on the path
+        return null;
+    }
+    
+    @Override
     public void performClickAction(Document doc, int offset, HyperlinkType ht) {
         if (view != null) {
             UiUtils.open(view, 0);
