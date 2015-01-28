@@ -1,1 +1,1 @@
-This folder is meant to hold code generation code (Max)
+This folder is meant to hold code for documentation and integrated help. (David)
