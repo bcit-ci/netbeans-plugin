@@ -29,7 +29,7 @@ import org.netbeans.modules.php.editor.lexer.PHPTokenId;
         id = "com.codeigniter.netbeans.documentation.GoToDocumentationAction"
 )
 @ActionRegistration(
-        displayName = "Go to Documentation"
+        displayName = "Go to CI documentation"
 )
 @ActionReferences({
     @ActionReference(path = "Editors/text/x-php5/Popup", position = 550)
@@ -52,8 +52,9 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction{
             return;
         }                  
         
-        String token = getTokenString(doc, offset);
-        System.out.printf("Carat is pointing to %s\n", token);
+        Token<PHPTokenId> token = getToken(doc, offset);
+        System.out.printf("Carat is pointing to %s\n", token.text().toString());
+        System.out.printf("Token type is %s\n", token.id().toString());
     }
     
     @Override
@@ -84,13 +85,13 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction{
     }
     
     /**
-     * Get the String of the current Token
+     * Get the token at offset in the given Document
      * 
      * @param doc document
      * @param offset offset in document
-     * @return target
+     * @return token
      */
-    public static String getTokenString(Document doc, int offset) {
+    public static Token<PHPTokenId> getToken(Document doc, int offset) {
         TokenSequence<PHPTokenId> ts = getTokenSequence(doc);
         if (ts == null) {
             return null;
@@ -100,8 +101,6 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction{
 
         Token<PHPTokenId> token = ts.token();
         
-        String target = token.text().toString();
-        
-        return target;
+        return token;                
     }
 }
