@@ -53,12 +53,14 @@ public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
         AbstractDocument absDoc = (AbstractDocument) doc;
         absDoc.readLock();
         TokenSequence<PHPTokenId> tokens;
+        
         try {
             TokenHierarchy<Document> hierarchy = TokenHierarchy.get(doc);
             tokens = hierarchy.tokenSequence(PHPTokenId.language());
         } finally {
             absDoc.readUnlock();
         }
+        
         return tokens;
     }
     
