@@ -5,9 +5,7 @@
  */
 package com.codeigniter.netbeans.documentation;
 
-import com.codeigniter.netbeans.navigator.CiHyperlinkProviderBase;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
@@ -20,7 +18,6 @@ import org.openide.awt.ActionReference;
 import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
-import org.netbeans.editor.Utilities;
 import org.netbeans.editor.ext.ExtKit;
 import org.netbeans.modules.php.editor.lexer.PHPTokenId;
 
@@ -63,44 +60,6 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction{
         int retval = super.getOffsetFromLine(doc, lineOffset);
         System.out.printf("Returning %d from GoToDocumentationAction.getOffsetFromLine()", retval);
         return retval;
-    }
-    
-    /**
-     * Get the TokenSequence for the full documentation
-     *
-     * @param doc document
-     * @return tokens or null in the event of an error
-     */
-    public static TokenSequence<PHPTokenId> getTokenSequence(Document doc) {
-        AbstractDocument absDoc = (AbstractDocument) doc;
-        absDoc.readLock();
-        TokenSequence<PHPTokenId> tokens = null;
-        try {
-            TokenHierarchy<Document> hierarchy = TokenHierarchy.get(doc);
-            tokens = hierarchy.tokenSequence(PHPTokenId.language());
-        } finally {
-            absDoc.readUnlock();
-        }
-        return tokens;
-    }
-    
-    /**
-     * Get the token at offset in the given Document
-     * 
-     * @param doc document
-     * @param offset offset in document
-     * @return token
-     */
-    public static Token<PHPTokenId> getToken(Document doc, int offset) {
-        TokenSequence<PHPTokenId> ts = getTokenSequence(doc);
-        if (ts == null) {
-            return null;
-        }
-        ts.move(offset);
-        ts.moveNext();
+    } 
 
-        Token<PHPTokenId> token = ts.token();
-        
-        return token;                
-    }
 }
