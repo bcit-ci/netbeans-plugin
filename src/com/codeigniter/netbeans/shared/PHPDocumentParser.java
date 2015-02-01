@@ -10,19 +10,60 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.Document;
+import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenHierarchy;
 import org.netbeans.api.lexer.TokenId;
 import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.editor.lexer.PHPTokenId;
-import org.netbeans.spi.lexer.LanguageHierarchy;
 
 /**
  *
  * @author dwoods
  */
 public abstract class PHPDocumentParser {
+    
+     /**
+     * Get the token at offset in the given Document
+     * 
+     * @param doc document
+     * @param offset offset in document
+     * @return token
+     */
+    public static Token<PHPTokenId> getToken(Document doc, int offset) {
+        TokenSequence<PHPTokenId> ts = getTokenSequence(doc);
+        if (ts == null) {
+            return null;
+        }
+        ts.move(offset);
+        ts.moveNext();
 
+        Token<PHPTokenId> token = ts.token();
+        
+        return token;                
+    }
+    
     /**
+     * Get the TokenSequence for the full document
+     *
+     * @param doc document
+     * @return tokens or null in the event of an error
+     */
+    public static TokenSequence<PHPTokenId> getTokenSequence(Document doc) {
+        AbstractDocument absDoc = (AbstractDocument) doc;
+        absDoc.readLock();
+        TokenSequence<PHPTokenId> tokens = null;
+        try {
+            TokenHierarchy<Document> hierarchy = TokenHierarchy.get(doc);
+            tokens = hierarchy.tokenSequence(PHPTokenId.language());
+        } finally {
+            absDoc.readUnlock();
+        }
+        return tokens;
+    }
+    
+     /**
      *  Gets the TokenSequence from the specified file
      * 
      * @param file
@@ -31,7 +72,7 @@ public abstract class PHPDocumentParser {
     public static TokenSequence<PHPTokenId> getTokensFromFile(File file) throws FileNotFoundException {
         TokenSequence<PHPTokenId> retval = null;
 
-        if (file.getPath().endsWith(".php")) {
+        if (file.getName().endsWith(".php")) {
             throw new IllegalArgumentException(
                     String.format("%s is not a PHP file\n", file.getPath()));
         }

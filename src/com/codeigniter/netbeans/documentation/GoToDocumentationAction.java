@@ -5,6 +5,7 @@
  */
 package com.codeigniter.netbeans.documentation;
 
+import static com.codeigniter.netbeans.shared.PHPDocumentParser.*;
 import java.awt.event.ActionEvent;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.Document;
