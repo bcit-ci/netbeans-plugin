@@ -5,11 +5,13 @@
  */
 package com.codeigniter.netbeans.shared;
 
+import java.io.Serializable;
+
 /**
  *
  * @author dwoods
  */
-class CiParameter {
+class CiParameter implements Serializable {
     
     public String name;
     public String defaultValue; // String representation of the default value or null if no default value
@@ -33,5 +35,14 @@ class CiParameter {
      */
     public String getDefaultValue() {
         return defaultValue;
+    }
+    
+    @Override
+    public String toString() {
+        String retval = this.name;
+        if (this.defaultValue != null) {
+            retval = retval.concat(String.format(" = %s", this.defaultValue));
+        }
+        return retval;
     }
 }

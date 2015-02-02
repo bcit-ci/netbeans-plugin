@@ -5,13 +5,14 @@
  */
 package com.codeigniter.netbeans.shared;
 
+import java.io.Serializable;
 import java.util.Vector;
 
 /**
  *
  * @author dwoods
  */
-public class CiFunction {
+public class CiFunction implements Serializable {
     
     private String method;
     private Vector<CiParameter> parameters;
@@ -39,5 +40,21 @@ public class CiFunction {
     public void addParameter(CiParameter param) {
         assert(this.parameters != null);
         this.parameters.add(param);
+    }
+    
+    @Override
+    public String toString() {
+        String retval = String.format("%s(", this.method);
+        boolean first = true;
+        
+        for (CiParameter param : this.parameters) {
+            if (!first) {
+                retval = retval.concat(", ");                
+            }
+            retval = retval.concat(param.toString());            
+            first = false;
+        }
+        
+        return retval.concat(")");        
     }
 }

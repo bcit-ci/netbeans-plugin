@@ -62,6 +62,14 @@ public abstract class PHPDocumentParser {
                     for (String s : arr) {
                         if (s.startsWith(ciDocBase)) {
                             try {
+                                // Update all links to point to the user_guide 3
+                                s = s.replaceFirst("/user_guide/", "/userguide3/");
+                                /* If http:// is used instead of http://www. then the code igniter website
+                                   won't open at the specified function.
+                                   For example: http://codeigniter.com/userguide3/libraries/table.html?#CI_Table.make_columns
+                                   won't open at the location where make_columns is documented. It works if http://www. is used instead though                                
+                                */
+                                s = s.replaceFirst("http://", "http://www.");
                                 docLink = new URL(s);
                             }
                             catch (MalformedURLException mue) {
@@ -121,20 +129,18 @@ public abstract class PHPDocumentParser {
                 if (token.id().equals(PHPTokenId.PHP_FUNCTION)) {
                     // Found a new function
                     int backCount = 1; // Number of movePrevious() calls
-                    boolean isPublic = false;
+                    boolean isPublic = true;
                     
-                    // Walk backwards to see if the function is public, private, or protected
+                    // Walk backwards to see if the function is private or protected
                     while (tokenSeq.movePrevious()) {
                         PHPTokenId id = tokenSeq.token().id();
-                        
-                        if (id.equals(PHPTokenId.PHP_PROTECTED) ||
-                                id.equals(PHPTokenId.PHP_PRIVATE)) {
+                                                
+                        if (!id.equals(PHPTokenId.WHITESPACE)) {
+                            if (id.equals(PHPTokenId.PHP_PROTECTED) || id.equals(PHPTokenId.PHP_PRIVATE)) {
+                                isPublic = false;
+                            }
                             break;
-                        }
-                        else if (id.equals(PHPTokenId.PHP_PUBLIC)) {
-                            isPublic = true;
-                            break;
-                        }
+                        }                                                                        
                                        
                         backCount++;    
                     }

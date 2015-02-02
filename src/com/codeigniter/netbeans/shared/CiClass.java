@@ -5,13 +5,14 @@
  */
 package com.codeigniter.netbeans.shared;
 
+import java.io.Serializable;
 import java.net.URL;
 
 /**
  *
  * @author dwoods
  */
-public class CiClass {
+public class CiClass implements Serializable {
     
     private URL documentationLink;
     private String name;
@@ -32,5 +33,14 @@ public class CiClass {
     
     public String getName() {
         return this.name;
+    }
+    
+    @Override
+    public String toString() {
+        String retval = this.name;
+        if (this.documentationLink != null) {
+            retval = retval.concat(String.format(" : %s", this.documentationLink.toString()));
+        }
+        return retval;
     }
 }
