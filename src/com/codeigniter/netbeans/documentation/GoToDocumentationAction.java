@@ -5,14 +5,16 @@
  */
 package com.codeigniter.netbeans.documentation;
 
+import com.codeigniter.netbeans.shared.CentralManager;
+import com.codeigniter.netbeans.shared.CiClass;
+import com.codeigniter.netbeans.shared.CiFunction;
 import static com.codeigniter.netbeans.shared.PHPDocumentParser.*;
 import java.awt.event.ActionEvent;
-import javax.swing.text.AbstractDocument;
+import java.util.Dictionary;
+import java.util.List;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.api.lexer.Token;
-import org.netbeans.api.lexer.TokenHierarchy;
-import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.editor.BaseDocument;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -39,12 +41,10 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction{
     private final static String CI_DOC_BASE_URL = "http://www.codeigniter.com/userguide3/libraries/security.html?#CI_Security.sanitize_filename";
     
     @Override
-    public void actionPerformed(ActionEvent evt, JTextComponent target) {
-        System.out.println("Entered actionPerformed()");
-        
+    public void actionPerformed(ActionEvent evt, JTextComponent target) {       
         int offset = target.getCaretPosition();
-        
         Document doc = target.getDocument();
+        
         if (doc == null) {
             System.err.println("Unable to get active document. Returning...");
             return;
@@ -53,6 +53,8 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction{
         Token<PHPTokenId> token = getToken(doc, offset);
         System.out.printf("Carat is pointing to %s\n", token.text().toString());
         System.out.printf("Token type is %s\n", token.id().toString());
+        
+        Dictionary<CiClass,List<CiFunction>> d = CentralManager.Instance().getCIDocFunctions();
     }
     
     @Override

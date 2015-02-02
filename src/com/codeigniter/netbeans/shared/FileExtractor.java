@@ -26,7 +26,7 @@ public abstract class FileExtractor {
     /**
      * 
      * @param dir - The directory to be searched
-     * @param fileExts - The list of valid file extensions for the files to be returned
+     * @param fileExts - The list of valid file extensions for the files to be returned. The "." should not be included
      *                   Pass null to return all files in the directory
      * @param recursive - Whether to search the directory recursively (will search all directories within the given directory)
      * @return - A List of File's matching the given file extensions
@@ -47,11 +47,19 @@ public abstract class FileExtractor {
         while (it.hasNext()) {
             File nextFile = it.next().toFile();
             if (nextFile.isDirectory() && recursive) {
-                retval.addAll(getFilesFromDirectory(nextFile, fileExts, recursive));
+                try {
+                    retval.addAll(getFilesFromDirectory(nextFile, fileExts, recursive));
+                }
+                catch (IllegalArgumentException iae) {
+                    System.err.println("Illegal Argument: Something went terribly wrong in getFilesFromDirectory()!");
+                }
+                catch (IOException ioe) {
+                    System.err.printf("getFilesFromDirectory(): Unable to get files from %s\n", nextFile.getAbsolutePath());
+                }
             }
             else if (nextFile.isFile()) {
                 String ext = getFileExtensionType(nextFile);
-                if (fileExts.contains(ext)) {
+                if (fileExts == null || fileExts.contains(ext)) {
                     retval.add(nextFile);
                 }
             }
@@ -65,7 +73,7 @@ public abstract class FileExtractor {
      * @param file
      * @return - The file's extension or empty string if file doesn't have an extension.
      */
-    private static String getFileExtensionType(File file) throws IllegalArgumentException
+    public static String getFileExtensionType(File file) throws IllegalArgumentException
     {
         if (file.isDirectory()) {
             throw new IllegalArgumentException(String.format("%s is not a file\n", file.getAbsoluteFile()));
@@ -76,6 +84,19 @@ public abstract class FileExtractor {
         
         if (index != -1) {
             retval = file.getName().substring(index + 1);
+        }
+        
+        return retval;
+    }
+    
+    public static boolean isPHPFile(File file) {
+        boolean retval = false;
+        
+        try {
+            retval = getFileExtensionType(file).equals("php");
+        }
+        catch (IllegalArgumentException iae) {
+            // Do nothing... will return false
         }
         
         return retval;
