@@ -108,7 +108,7 @@ public abstract class PHPDocumentParser {
     /**
      *  Extracts all public functions from the PHP file 
      * @param file
-     * @return
+     * @return  ArrayList of CiFunctions
      * @throws FileNotFoundException
      * @throws IllegalArgumentException 
      */
@@ -268,7 +268,10 @@ public abstract class PHPDocumentParser {
     }
     
     /**
-     * 
+     *  Extracts the parameters and their default values
+     *  The string should only contain the portion of the function between the parenthesis
+     *  For example, if the code is: public function foo($bar1, $bar2 = "somevalue") {
+     *  then the string should be "$bar1, $bar2 = "somevalue""
      * @param str
      * @return 
      */

@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author dwoods
  * 
- *  This class is designed to contain functions for searching for files on the File System
+ *  This class is designed to contain functions for searching for files on the File System, and other file related functions
  *  
  */
 public abstract class FileExtractor {
@@ -71,7 +71,7 @@ public abstract class FileExtractor {
     /**
      * 
      * @param file
-     * @return - The file's extension or empty string if file doesn't have an extension.
+     * @return - The file's extension (not including the ".") or empty string if file doesn't have an extension.
      */
     public static String getFileExtensionType(File file) throws IllegalArgumentException
     {
@@ -89,6 +89,11 @@ public abstract class FileExtractor {
         return retval;
     }
     
+    /**
+     * 
+     * @param file
+     * @return True if the file extension is ".php"
+     */
     public static boolean isPHPFile(File file) {
         boolean retval = false;
         

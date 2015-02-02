@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ *  CiClass contains information about a Code Igniter class that's useful for navigating to its documentation page
  * @author dwoods
  */
 public class CiClass implements Serializable {

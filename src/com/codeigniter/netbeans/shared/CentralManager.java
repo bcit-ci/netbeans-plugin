@@ -28,7 +28,7 @@ import java.util.List;
 public class CentralManager {
     
     private static CentralManager instance = null;
-    private List<CiClass> ciClasses = null;
+    private List<CiClass> ciClasses = null; 
     private Hashtable<String, List<CiClass>> ciFuncs = null;
     private static final String ciClassesFilename = "./src/com/codeigniter/netbeans/documentation/ciDoc.ser";
     
@@ -48,6 +48,10 @@ public class CentralManager {
         return instance;
     }
     
+    /**
+     * 
+     * @return A Hashtable with the method name as the key, and list of CIClasses that has that method
+     */
     public Hashtable<String, List<CiClass>> getCiFunctions() {
         if (this.ciFuncs == null) {
             if (this.ciClasses == null) {
@@ -85,6 +89,9 @@ public class CentralManager {
         return this.ciClasses;
     }
     
+    /**
+     *  Saves this.ciClasses to disk at the location specified by ciClassesFilename
+     */
     private void saveCiClasses() {
         try {
             FileOutputStream fileOut = new FileOutputStream(ciClassesFilename);
@@ -98,6 +105,10 @@ public class CentralManager {
         }
     }
     
+    /**
+     *  Loads the ciDoc.ser file from the location specified by ciClassesFilename
+     * @return True if successful. False otherwise
+     */
     private boolean loadCiClasses() {
         boolean retval = false;
         try {
@@ -123,8 +134,7 @@ public class CentralManager {
         if (path.endsWith("/")) {
             path = path.concat("/");
         }
-        
-        // 
+                
         File ciLibDir = new File(path + "libraries/");
         File ciHelperDir = new File(path + "helpers/");
         File ciCoreDir = new File(path + "core/");

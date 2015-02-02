@@ -80,8 +80,8 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction {
                 assert (false); // List of classes should never be empty 
             }
         } 
-        else {
-            System.out.println("\007");
+        else {            
+            System.out.println("\007"); // TODO: replace with netbeans error beep
         }
 
     }
@@ -93,7 +93,14 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction {
         return retval;
     }
 
+    /**
+     * Open the default browser showing the CodeIgniter documentation for the given Class and method
+     * @param ciClass The CiClass must contain a valid documentationLink
+     * @param methodName 
+     */
     private void goToDocumentation(CiClass ciClass, String methodName) {
+        assert(ciClass.getDocumentationLink() != null);
+        
         try {
             URL url = new URL(String.format("%s?#%s.%s", ciClass.getDocumentationLink().toString(), 
                     ciClass.getName(), methodName));
@@ -106,6 +113,10 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction {
         }
     }            
     
+    /**
+     * Opens the default browser on the CodeIgniter user guide search page with the methodName as the searched for value
+     * @param methodName 
+     */
     private void goToSearchURL(String methodName) {
         try {
             URL url = new URL(CI_DOC_SEARCH_BASE + methodName + CI_DOC_SEARCH_SUFFIX);
