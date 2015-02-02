@@ -34,7 +34,8 @@ import org.openide.awt.HtmlBrowser.URLDisplayer;
         displayName = "Go to CI documentation"
 )
 @ActionReferences({
-    @ActionReference(path = "Editors/text/x-php5/Popup", position = 550)
+    @ActionReference(path = "Shortcuts", name = "CA-D"),
+    @ActionReference(path = "Editors/text/x-php5/Popup", position = 550)    
 })
 
 @Messages("CTL_GoToDocumentationAction=Go to Documentation")

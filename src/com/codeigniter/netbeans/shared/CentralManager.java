@@ -23,12 +23,12 @@ import java.util.List;
  * @author dwoods
  * 
  *  This class is a singleton that stores important plugin-wide information, including
- *  location of the Code Igniter system folder, etc.
+ *  location of the Code Igniter system folder, list of CI classes, list of all CI functions, etc.
  */
 public class CentralManager {
     
     private static CentralManager instance = null;
-    private Hashtable<CiClass, List<CiFunction>> ciClasses = null;
+    private List<CiClass> ciClasses = null;
     private Hashtable<String, List<CiClass>> ciFuncs = null;
     private static final String ciClassesFilename = "./src/com/codeigniter/netbeans/documentation/ciDoc.ser";
     
@@ -55,13 +55,9 @@ public class CentralManager {
             }
             
             this.ciFuncs = new Hashtable<String, List<CiClass>>();
-            Enumeration<CiClass> keys = this.ciClasses.keys();
-            
-            while (keys.hasMoreElements()) {
-                CiClass ciClass = keys.nextElement();
-                List<CiFunction> functions = this.ciClasses.get(ciClass);
-                
-                for (CiFunction func : functions) {
+                        
+            for (CiClass ciClass : this.ciClasses) {                                                
+                for (CiFunction func : ciClass.getFunctions()) {
                     List<CiClass> classList = new ArrayList<CiClass>();
                     if (this.ciFuncs.containsKey(func.getMethodName())) {
                         classList = this.ciFuncs.get(func.getMethodName());
@@ -69,8 +65,7 @@ public class CentralManager {
                     classList.add(ciClass);
                     this.ciFuncs.put(func.getMethodName(), classList);
                 }
-            }
-            
+            }            
         }        
         
         return this.ciFuncs;        
@@ -78,48 +73,12 @@ public class CentralManager {
     
     /**
      * 
-     * @return Hashtable of all the CI classes with a list of their functions
+     * @return List of all the CI classes
      */
-    public Hashtable<CiClass, List<CiFunction>> getCiClasses() {
+    public List<CiClass> getCiClasses() {
         if (this.ciClasses == null) {              
             if (!this.loadCiClasses()) {      
-                // In order to update the list of CI classes/functions delete the ciDoc.ser file
-                // and change the below file paths to point to the libraries and helpers directories
-                // in the CI System folder
-                File ciLibDir = new File("/Applications/XAMPP/htdocs/system3/libraries/");
-                File ciHelperDir = new File("/Applications/XAMPP/htdocs/system3/helpers/");
-                File ciCoreDir = new File("/Applications/XAMPP/htdocs/system3/core/");
-                List<String> fileExts = new LinkedList<String>();
-                fileExts.add("php");
-                this.ciClasses = new Hashtable<CiClass, List<CiFunction>>();
-
-                try {
-                    List<File> files = getFilesFromDirectory(ciLibDir, fileExts, false);
-                    files.addAll(getFilesFromDirectory(ciHelperDir, fileExts, false));
-                    files.addAll(getFilesFromDirectory(ciCoreDir, fileExts, false));
-
-                    for (File f : files) {
-                        CiClass ciClass = PHPDocumentParser.extractCiClass(f);
-                        ArrayList<CiFunction> funcs = PHPDocumentParser.extractFunctions(f);
-                        this.ciClasses.put(ciClass, funcs);
-                    }                   
-                    
-                    saveCiClasses();
-                    
-                    // Print
-//                    Enumeration<CiClass> ciEnum = this.ciClasses.keys();
-//                    while (ciEnum.hasMoreElements()) {
-//                        CiClass c = ciEnum.nextElement();
-//                        List<CiFunction> funcs = this.ciClasses.get(c);
-//                        System.out.println(c.toString());
-//                        for (CiFunction func : funcs) {
-//                            System.out.println(func.toString());
-//                        }
-//                    }
-                }
-                catch (Exception e) {
-                    e.printStackTrace(System.err);
-                }
+                updateCiClasses("/Applications/XAMPP/htdocs/system3/");
             }
         }
         
@@ -144,7 +103,7 @@ public class CentralManager {
         try {
             FileInputStream fileIn = new FileInputStream(ciClassesFilename);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            this.ciClasses = (Hashtable<CiClass, List<CiFunction>>)in.readObject();
+            this.ciClasses = (ArrayList<CiClass>)in.readObject();
             in.close();
             fileIn.close();
             retval = true;
@@ -155,4 +114,50 @@ public class CentralManager {
         
         return retval;
     }
+    
+    /**
+     *     This method updates the ciDoc.ser file
+     * @param path The base path for the CI system folder
+     */
+    private void updateCiClasses(String path) {
+        if (path.endsWith("/")) {
+            path = path.concat("/");
+        }
+        
+        // 
+        File ciLibDir = new File(path + "libraries/");
+        File ciHelperDir = new File(path + "helpers/");
+        File ciCoreDir = new File(path + "core/");
+        List<String> fileExts = new LinkedList<String>();
+        fileExts.add("php");
+        this.ciClasses = new ArrayList<CiClass>();
+
+        try {
+            List<File> files = getFilesFromDirectory(ciLibDir, fileExts, false);
+            files.addAll(getFilesFromDirectory(ciHelperDir, fileExts, false));
+            files.addAll(getFilesFromDirectory(ciCoreDir, fileExts, false));
+
+            for (File f : files) {
+                CiClass ciClass = PHPDocumentParser.extractCiClass(f);
+                ciClass.setFunctions(PHPDocumentParser.extractFunctions(f));
+                this.ciClasses.add(ciClass);
+            }                   
+
+            saveCiClasses();
+
+            // Print
+//                    Enumeration<CiClass> ciEnum = this.ciClasses.keys();
+//                    while (ciEnum.hasMoreElements()) {
+//                        CiClass c = ciEnum.nextElement();
+//                        List<CiFunction> funcs = this.ciClasses.get(c);
+//                        System.out.println(c.toString());
+//                        for (CiFunction func : funcs) {
+//                            System.out.println(func.toString());
+//                        }
+//                    }
+        }
+        catch (Exception e) {
+            e.printStackTrace(System.err);
+        }
+    }    
 }

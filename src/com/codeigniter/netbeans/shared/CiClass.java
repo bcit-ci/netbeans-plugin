@@ -7,6 +7,8 @@ package com.codeigniter.netbeans.shared;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,6 +18,7 @@ public class CiClass implements Serializable {
     
     private URL documentationLink;
     private String name;
+    private ArrayList<CiFunction> functions;
     
     public CiClass(String name) {
         this(name, null);
@@ -25,10 +28,23 @@ public class CiClass implements Serializable {
         assert(name != null);
         this.name = name;
         this.documentationLink = documentationLink;
+        this.functions = new ArrayList<CiFunction>();
+    }
+    
+    public void addFunction(CiFunction function) {
+        this.functions.add(function);
+    }
+    
+    public void setFunctions(ArrayList<CiFunction> functions) {
+        this.functions = functions;
     }
     
     public URL getDocumentationLink() {
         return this.documentationLink;
+    }
+    
+    public ArrayList<CiFunction> getFunctions() {
+        return this.functions;
     }
     
     public String getName() {
@@ -42,5 +58,10 @@ public class CiClass implements Serializable {
             retval = retval.concat(String.format(" : %s", this.documentationLink.toString()));
         }
         return retval;
+    }
+    
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
     }
 }
