@@ -144,6 +144,7 @@ final class AvailablePanel extends javax.swing.JPanel {
         // someCheckBox.setSelected(NbPreferences.forModule(AvailablePanel.class).getBoolean("someFlag", false));
         // or:
         // someTextField.setText(SomeSystemOption.getDefault().getSomeStringProperty());
+        CiPath.setText((NbPreferences.forModule(AvailablePanel.class).get("CiPath", CiPath.getText())));
     }
 
     void store() {
