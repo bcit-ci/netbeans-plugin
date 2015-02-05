@@ -30,7 +30,8 @@ public class CentralManager {
     private static CentralManager instance = null;
     private List<CiClass> ciClasses = null; 
     private Hashtable<String, List<CiClass>> ciFuncs = null;
-    private static final String ciClassesFilename = "./src/com/codeigniter/netbeans/documentation/ciDoc.ser";
+    private static final String CI_CLASSES_FILENAME = "./src/com/codeigniter/netbeans/documentation/ciDoc.ser";
+    private static final String CI_SYSTEM_FOLDER = "/Applications/XAMPP/htdocs/system3/";
     
     private CentralManager() {
         
@@ -82,7 +83,7 @@ public class CentralManager {
     public List<CiClass> getCiClasses() {
         if (this.ciClasses == null) {              
             if (!this.loadCiClasses()) {      
-                updateCiClasses("/Applications/XAMPP/htdocs/system3/");
+                updateCiClasses(CI_SYSTEM_FOLDER);
             }
         }
         
@@ -94,7 +95,7 @@ public class CentralManager {
      */
     private void saveCiClasses() {
         try {
-            FileOutputStream fileOut = new FileOutputStream(ciClassesFilename);
+            FileOutputStream fileOut = new FileOutputStream(CI_CLASSES_FILENAME);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this.ciClasses);
             out.close();
@@ -112,7 +113,7 @@ public class CentralManager {
     private boolean loadCiClasses() {
         boolean retval = false;
         try {
-            FileInputStream fileIn = new FileInputStream(ciClassesFilename);
+            FileInputStream fileIn = new FileInputStream(CI_CLASSES_FILENAME);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             this.ciClasses = (ArrayList<CiClass>)in.readObject();
             in.close();
@@ -131,7 +132,7 @@ public class CentralManager {
      * @param path The base path for the CI system folder
      */
     private void updateCiClasses(String path) {
-        if (path.endsWith("/")) {
+        if (!path.endsWith("/")) {
             path = path.concat("/");
         }
                 
