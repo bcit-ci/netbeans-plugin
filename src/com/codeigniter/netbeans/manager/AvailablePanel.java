@@ -27,55 +27,57 @@ final class AvailablePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        CiPluginListTable = new javax.swing.JTable();
+        CiPluginDescriptionLable = new javax.swing.JLabel();
+        CiPluginInstallBtn = new javax.swing.JButton();
+        CiPathLabel = new javax.swing.JLabel();
+        CiUpdateBtn = new javax.swing.JButton();
         CiPath = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        CiVersionLabel = new javax.swing.JLabel();
+        CiVersion = new javax.swing.JLabel();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        CiPluginListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"some", "1", "Good"},
                 {"other", "2", "Good"},
-                {"Another", "3", "No"},
-                {null, null, null}
+                {"Another", "3", "No"}
             },
             new String [] {
                 "Plugin", "Version", "Stable"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jTable1.columnModel.title0")); // NOI18N
-            jTable1.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jTable1.columnModel.title1")); // NOI18N
-            jTable1.getColumnModel().getColumn(2).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jTable1.columnModel.title2")); // NOI18N
+        jScrollPane1.setViewportView(CiPluginListTable);
+        if (CiPluginListTable.getColumnModel().getColumnCount() > 0) {
+            CiPluginListTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginListTable.columnModel.title0")); // NOI18N
+            CiPluginListTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginListTable.columnModel.title1")); // NOI18N
+            CiPluginListTable.getColumnModel().getColumn(2).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginListTable.columnModel.title2")); // NOI18N
         }
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel2, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jLabel2.text")); // NOI18N
-        jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(130, 135, 144)));
+        org.openide.awt.Mnemonics.setLocalizedText(CiPluginDescriptionLable, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginDescriptionLable.text")); // NOI18N
+        CiPluginDescriptionLable.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        CiPluginDescriptionLable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(130, 135, 144)));
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jButton1.text")); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(CiPluginInstallBtn, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginInstallBtn.text")); // NOI18N
+        CiPluginInstallBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                CiPluginInstallBtnActionPerformed(evt);
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jLabel1.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(CiPathLabel, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPathLabel.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton2, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jButton2.text")); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(CiUpdateBtn, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiUpdateBtn.text")); // NOI18N
+        CiUpdateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                CiUpdateBtnActionPerformed(evt);
             }
         });
 
         org.openide.awt.Mnemonics.setLocalizedText(CiPath, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPath.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.jLabel3.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(CiVersionLabel, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiVersionLabel.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(CiVersion, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiVersion.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -85,19 +87,22 @@ final class AvailablePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CiPluginDescriptionLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1))
+                        .addComponent(CiPluginInstallBtn))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addComponent(CiUpdateBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
+                                .addComponent(CiPathLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CiPath)))
+                                .addComponent(CiPath))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(CiVersionLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(CiVersion)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -107,25 +112,27 @@ final class AvailablePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(CiPluginDescriptionLable, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(CiPluginInstallBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jLabel1)
+                    .addComponent(CiUpdateBtn)
+                    .addComponent(CiPathLabel)
                     .addComponent(CiPath))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CiVersionLabel)
+                    .addComponent(CiVersion))
                 .addGap(21, 21, 21))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void CiPluginInstallBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CiPluginInstallBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_CiPluginInstallBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void CiUpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CiUpdateBtnActionPerformed
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
         chooser.setDialogTitle("Select CodeIgniter Project Folder..");
@@ -134,7 +141,7 @@ final class AvailablePanel extends javax.swing.JPanel {
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             CiPath.setText(chooser.getCurrentDirectory().toString());
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_CiUpdateBtnActionPerformed
 
     void load() {
         // TODO read settings and initialize GUI
@@ -165,12 +172,13 @@ final class AvailablePanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CiPath;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel CiPathLabel;
+    private javax.swing.JLabel CiPluginDescriptionLable;
+    private javax.swing.JButton CiPluginInstallBtn;
+    private javax.swing.JTable CiPluginListTable;
+    private javax.swing.JButton CiUpdateBtn;
+    private javax.swing.JLabel CiVersion;
+    private javax.swing.JLabel CiVersionLabel;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
