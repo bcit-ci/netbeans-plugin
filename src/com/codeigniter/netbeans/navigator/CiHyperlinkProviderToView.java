@@ -36,13 +36,14 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
         if (extendedPath == null) {
             return false;
         }
-        extendedPath = VIEW_PATH + extendedPath;
+        extendedPath = VIEW_PATH + extendedPath + ".php";
         
         FileObject parent = getCiRoot(docObject);
         if (parent == null) {
             return false;
         }
         view = parent.getFileObject(extendedPath);
+        System.out.println(extendedPath);
         
         return true;
     }
