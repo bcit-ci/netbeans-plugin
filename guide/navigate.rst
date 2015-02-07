@@ -11,8 +11,8 @@ and helpers.
 How To Use It
 *************
 
-Right-click inside an editor panel to see links to the related components 
-source.
+Press control, and left click inside an editor panel to see links to the related 
+components source.
 
 ************
 How It Works

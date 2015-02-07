@@ -6,6 +6,8 @@
 package com.codeigniter.netbeans.navigator;
 
 import javax.swing.text.Document;
+import org.netbeans.api.editor.mimelookup.MimeRegistration;
+import org.netbeans.lib.editor.hyperlink.spi.HyperlinkProviderExt;
 import org.netbeans.lib.editor.hyperlink.spi.HyperlinkType;
 import org.netbeans.modules.csl.api.UiUtils;
 import org.netbeans.modules.editor.NbEditorUtilities;
@@ -15,6 +17,7 @@ import org.openide.filesystems.FileObject;
  *
  * @author Tamaki_Sakura
  */
+@MimeRegistration(mimeType = "text/x-php5", service = HyperlinkProviderExt.class)
 public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
     
     private static final String VIEW_PATH = "application/views/";
@@ -33,13 +36,14 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
         if (extendedPath == null) {
             return false;
         }
-        extendedPath = VIEW_PATH + extendedPath;
+        extendedPath = VIEW_PATH + extendedPath + ".php";
         
         FileObject parent = getCiRoot(docObject);
         if (parent == null) {
             return false;
         }
         view = parent.getFileObject(extendedPath);
+        System.out.println(extendedPath);
         
         return true;
     }

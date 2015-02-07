@@ -19,14 +19,13 @@ import org.openide.util.actions.Presenter;
         id = "com.codeigniter.netbeans.CISearchToolbar"
 )
 @ActionRegistration(
-        iconBase = "com/codeigniter/netbeans/misc/logo.png",
-        displayName = "#CTL_CISearchToolbar"
+        displayName = "#CTL_CISearchToolbar",
+        lazy = false
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/File", position = 0),
     @ActionReference(path = "Toolbars/File", position = 0)
 })
-@Messages("CTL_CISearchToolbar=CodeIgniter")
+@Messages("CTL_CISearchToolbar=Search CI Docs")
 public final class CISearchToolbar extends AbstractAction implements Presenter.Toolbar {
 
     @Override

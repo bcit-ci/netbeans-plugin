@@ -38,7 +38,7 @@ final class AvailablePanel extends javax.swing.JPanel {
 
         CiPluginListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"some", "1", "Good"},
+                {"Test1", "1", "Good"},
                 {"other", "2", "Good"},
                 {"Another", "3", "No"}
             },

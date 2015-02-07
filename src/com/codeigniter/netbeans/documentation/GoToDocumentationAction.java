@@ -25,23 +25,23 @@ import org.openide.util.NbBundle.Messages;
 import org.netbeans.editor.ext.ExtKit;
 import org.netbeans.modules.php.editor.lexer.PHPTokenId;
 import org.openide.awt.HtmlBrowser.URLDisplayer;
+import java.awt.Toolkit;
 
 @ActionID(
         category = "Help",
         id = "com.codeigniter.netbeans.documentation.GoToDocumentationAction"
 )
 @ActionRegistration(
-        displayName = "Go to CI documentation"
+        displayName = "#CTL_GoToDocumentationAction"
 )
-@ActionReferences({
+@ActionReferences({   
     @ActionReference(path = "Shortcuts", name = "CA-D"),
-    @ActionReference(path = "Editors/text/x-php5/Popup", position = 550)    
+    @ActionReference(path = "Editors/text/x-php5/Popup", position = 550)        
 })
 
-@Messages("CTL_GoToDocumentationAction=Go to Documentation")
+@Messages("CTL_GoToDocumentationAction=Go to CI Docs")
 public final class GoToDocumentationAction extends ExtKit.GotoAction {
 
-    private final static String CI_DOC_BASE_URL = "http://www.codeigniter.com/userguide3/libraries/security.html?#CI_Security.sanitize_filename";
     private final static String CI_DOC_SEARCH_BASE = "http://www.codeigniter.com/userguide3/search.html?q=";
     private final static String CI_DOC_SEARCH_SUFFIX = "&check_keywords=yes&area=default";
 
@@ -80,8 +80,8 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction {
                 assert (false); // List of classes should never be empty 
             }
         } 
-        else {            
-            System.out.println("\007"); // TODO: replace with netbeans error beep
+        else {                         
+            Toolkit.getDefaultToolkit().beep();
         }
 
     }
@@ -102,14 +102,14 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction {
         assert(ciClass.getDocumentationLink() != null);
         
         try {
-            URL url = new URL(String.format("%s?#%s.%s", ciClass.getDocumentationLink().toString(), 
+            URL url = new URL(String.format("%s?#%s::%s", ciClass.getDocumentationLink().toString(), 
                     ciClass.getName(), methodName));
             System.out.printf("Going to URL: %s\n", url.toString());
             URLDisplayer.getDefault().showURL(url);
         } 
         catch (MalformedURLException mue) {
-            System.out.println("\007"); // Play the error sound
-            mue.printStackTrace(System.err);
+            Toolkit.getDefaultToolkit().beep(); // Play the error sound
+            mue.printStackTrace(System.err);            
         }
     }            
     
@@ -124,8 +124,8 @@ public final class GoToDocumentationAction extends ExtKit.GotoAction {
             URLDisplayer.getDefault().showURL(url);
         } 
         catch (MalformedURLException mue) {
-            System.out.println("\007"); // Play the error sound
-            mue.printStackTrace(System.err);
+            Toolkit.getDefaultToolkit().beep(); // Play the error sound
+            mue.printStackTrace(System.err);            
         }
     }
 }
