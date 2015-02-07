@@ -5,6 +5,7 @@
  */
 package com.codeigniter.netbeans.navigator;
 
+import com.codeigniter.netbeans.shared.PHPDocumentParser;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
@@ -42,27 +43,6 @@ public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
         }
         return null;
     }
-
-    /**
-     * Get the TokenSequence for the full documentation
-     *
-     * @param doc document
-     * @return tokens
-     */
-    protected TokenSequence<PHPTokenId> getTokenSequence(Document doc) {
-        AbstractDocument absDoc = (AbstractDocument) doc;
-        absDoc.readLock();
-        TokenSequence<PHPTokenId> tokens;
-        
-        try {
-            TokenHierarchy<Document> hierarchy = TokenHierarchy.get(doc);
-            tokens = hierarchy.tokenSequence(PHPTokenId.language());
-        } finally {
-            absDoc.readUnlock();
-        }
-        
-        return tokens;
-    }
     
     /**
      * Get the String of the current Token
@@ -72,7 +52,7 @@ public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
      * @return target
      */
     protected String getStringTokenString(Document doc, int offset) {
-        TokenSequence<PHPTokenId>tokens = getTokenSequence(doc);
+        TokenSequence<PHPTokenId>tokens = PHPDocumentParser.getTokenSequence(doc);
         if (tokens == null) {
             return null;
         }
