@@ -16,29 +16,17 @@ import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionRegistration;
-import org.openide.util.NbBundle.Messages;
 
-@ActionID(
-        category = "File",
-        id = "com.codeigniter.netbeans.generator.generatorAction"
-)
-@ActionRegistration(
-        iconBase = "com/codeigniter/netbeans/generator/cilogo16.png",
-        displayName = "#CTL_generatorAction"
-)
-@ActionReferences({
-    @ActionReference(path = "Menu/File", position = -100),
-    @ActionReference(path = "Toolbars/File", position = -100),
-    @ActionReference(path = "Shortcuts", name = "DS-A")
-})
-@Messages("CTL_generatorAction=New Files")
-public final class generatorAction implements ActionListener {
+// An example action demonstrating how the wizard could be called from within
+// your code. You can move the code below wherever you need, or register an action:
+@ActionID(category="Wizard", id="com.codeigniter.netbeans.generator.GenwizardWizardAction")
+@ActionRegistration(displayName="Open Generator Wizard")
+@ActionReference(path="Menu/Tools", position=10)
+public final class GenwizardWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO implement action body
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
         panels.add(new GenwizardWizardPanel1());
         panels.add(new GenwizardWizardPanel2());
@@ -64,4 +52,5 @@ public final class generatorAction implements ActionListener {
             // do something
         }
     }
+
 }
