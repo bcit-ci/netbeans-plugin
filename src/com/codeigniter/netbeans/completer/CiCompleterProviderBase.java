@@ -12,5 +12,5 @@ import org.netbeans.spi.editor.completion.CompletionProvider;
  * @author Tamaki_Sakura
  */
 public abstract class CiCompleterProviderBase implements CompletionProvider {
-    
+    //Completion Item
 }

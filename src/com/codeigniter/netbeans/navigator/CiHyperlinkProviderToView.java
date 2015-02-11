@@ -5,8 +5,6 @@
  */
 package com.codeigniter.netbeans.navigator;
 
-import com.codeigniter.netbeans.shared.FileExtractor;
-import java.io.File;
 import javax.swing.text.Document;
 import org.netbeans.api.editor.mimelookup.MimeRegistration;
 import org.netbeans.lib.editor.hyperlink.spi.HyperlinkProviderExt;
