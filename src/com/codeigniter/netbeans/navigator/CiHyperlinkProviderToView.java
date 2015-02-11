@@ -5,6 +5,8 @@
  */
 package com.codeigniter.netbeans.navigator;
 
+import com.codeigniter.netbeans.shared.FileExtractor;
+import java.io.File;
 import javax.swing.text.Document;
 import org.netbeans.api.editor.mimelookup.MimeRegistration;
 import org.netbeans.lib.editor.hyperlink.spi.HyperlinkProviderExt;
@@ -27,7 +29,7 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
     public boolean isHyperlinkPoint(Document doc, int offset, HyperlinkType ht) {
         view = null;
         FileObject docObject = NbEditorUtilities.getFileObject(doc);
-
+        
         if (docObject == null) {
             return false;
         }
