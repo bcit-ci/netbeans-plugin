@@ -10,7 +10,10 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.php.editor.lexer.PHPTokenId;
+import org.netbeans.spi.editor.completion.CompletionResultSet;
 import org.netbeans.spi.editor.completion.CompletionTask;
+import org.netbeans.spi.editor.completion.support.AsyncCompletionQuery;
+import org.netbeans.spi.editor.completion.support.AsyncCompletionTask;
 
 /**
  *
@@ -21,21 +24,24 @@ public class CiCompleterView extends CiCompleterProviderBase {
 
     @Override
     public CompletionTask createTask(int i, JTextComponent jtc) {
-        Document doc = getDocFromComponent(jtc);
-        TokenSequence<PHPTokenId> tokens = PHPDocumentParser.getTokenSequence(doc);
-        if (tokens == null) {
-            return null;
-        }
         //TBD
-        
-        return null;
+        AsyncCompletionQuery mViewCompletionQuery
+                = new CiViewAsyncCompletionQuery();
+        return new AsyncCompletionTask(mViewCompletionQuery, jtc);
     }
 
     @Override
     public int getAutoQueryTypes(JTextComponent jtc, String string) {
         //TBD
-        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    static class CiViewAsyncCompletionQuery extends AsyncCompletionQuery {
+
+        @Override
+        protected void query(CompletionResultSet crs, Document dcmnt, int i) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+    }
 }

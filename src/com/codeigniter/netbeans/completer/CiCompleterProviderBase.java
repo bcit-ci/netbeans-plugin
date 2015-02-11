@@ -5,8 +5,6 @@
  */
 package com.codeigniter.netbeans.completer;
 
-import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
 import org.netbeans.spi.editor.completion.CompletionProvider;
 
 /**
@@ -15,13 +13,4 @@ import org.netbeans.spi.editor.completion.CompletionProvider;
  */
 public abstract class CiCompleterProviderBase implements CompletionProvider {
     
-    /**
-     * Get Document from JTextComponent
-     * 
-     * @param jtc JTextComponent
-     * @return doc
-     */
-    protected Document getDocFromComponent(JTextComponent jtc) {
-        return jtc.getDocument();
-    }
 }
