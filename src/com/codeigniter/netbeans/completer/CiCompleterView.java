@@ -39,7 +39,7 @@ public class CiCompleterView extends CiCompleterProviderBase {
     static class CiViewAsyncCompletionQuery extends AsyncCompletionQuery {
 
         @Override
-        protected void query(CompletionResultSet crs, Document dcmnt, int i) {
+        protected void query(CompletionResultSet crs, Document doc, int offset) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
         
