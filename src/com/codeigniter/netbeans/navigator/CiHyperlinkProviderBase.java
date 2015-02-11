@@ -52,7 +52,7 @@ public abstract class CiHyperlinkProviderBase implements HyperlinkProviderExt {
      * @return target
      */
     protected String getStringTokenString(Document doc, int offset) {
-        TokenSequence<PHPTokenId>tokens = PHPDocumentParser.getTokenSequence(doc);
+        TokenSequence<PHPTokenId> tokens = PHPDocumentParser.getTokenSequence(doc);
         if (tokens == null) {
             return null;
         }
