@@ -33,7 +33,7 @@ import org.openide.util.NbBundle.Messages;
     @ActionReference(path = "Toolbars/File", position = -100),
     @ActionReference(path = "Shortcuts", name = "DS-A")
 })
-@Messages("CTL_generatorAction=New Files")
+@Messages("CTL_generatorAction=CI Generator")
 public final class generatorAction implements ActionListener {
 
     @Override
