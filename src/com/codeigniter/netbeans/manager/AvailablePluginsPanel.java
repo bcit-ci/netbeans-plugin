@@ -8,11 +8,11 @@ package com.codeigniter.netbeans.manager;
 import javax.swing.JFileChooser;
 import org.openide.util.NbPreferences;
 
-final class AvailablePanel extends javax.swing.JPanel {
+final class AvailablePluginsPanel extends javax.swing.JPanel {
 
-    private final AvailableOptionsPanelController controller;
+    private final AvailablePluginsOptionsPanelController controller;
 
-    AvailablePanel(AvailableOptionsPanelController controller) {
+    AvailablePluginsPanel(AvailablePluginsOptionsPanelController controller) {
         this.controller = controller;
         initComponents();
         // TODO listen to changes in form fields and call controller.changed()
@@ -30,11 +30,6 @@ final class AvailablePanel extends javax.swing.JPanel {
         CiPluginListTable = new javax.swing.JTable();
         CiPluginDescriptionLable = new javax.swing.JLabel();
         CiPluginInstallBtn = new javax.swing.JButton();
-        CiPathLabel = new javax.swing.JLabel();
-        CiUpdateBtn = new javax.swing.JButton();
-        CiPath = new javax.swing.JLabel();
-        CiVersionLabel = new javax.swing.JLabel();
-        CiVersion = new javax.swing.JLabel();
 
         CiPluginListTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -48,36 +43,21 @@ final class AvailablePanel extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(CiPluginListTable);
         if (CiPluginListTable.getColumnModel().getColumnCount() > 0) {
-            CiPluginListTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginListTable.columnModel.title0")); // NOI18N
-            CiPluginListTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginListTable.columnModel.title1")); // NOI18N
-            CiPluginListTable.getColumnModel().getColumn(2).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginListTable.columnModel.title2")); // NOI18N
+            CiPluginListTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePluginsPanel.class, "AvailablePluginsPanel.CiPluginListTable.columnModel.title0")); // NOI18N
+            CiPluginListTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePluginsPanel.class, "AvailablePluginsPanel.CiPluginListTable.columnModel.title1")); // NOI18N
+            CiPluginListTable.getColumnModel().getColumn(2).setHeaderValue(org.openide.util.NbBundle.getMessage(AvailablePluginsPanel.class, "AvailablePluginsPanel.CiPluginListTable.columnModel.title2")); // NOI18N
         }
 
-        org.openide.awt.Mnemonics.setLocalizedText(CiPluginDescriptionLable, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginDescriptionLable.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(CiPluginDescriptionLable, org.openide.util.NbBundle.getMessage(AvailablePluginsPanel.class, "AvailablePluginsPanel.CiPluginDescriptionLable.text")); // NOI18N
         CiPluginDescriptionLable.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         CiPluginDescriptionLable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(130, 135, 144)));
 
-        org.openide.awt.Mnemonics.setLocalizedText(CiPluginInstallBtn, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPluginInstallBtn.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(CiPluginInstallBtn, org.openide.util.NbBundle.getMessage(AvailablePluginsPanel.class, "AvailablePluginsPanel.CiPluginInstallBtn.text")); // NOI18N
         CiPluginInstallBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CiPluginInstallBtnActionPerformed(evt);
             }
         });
-
-        org.openide.awt.Mnemonics.setLocalizedText(CiPathLabel, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPathLabel.text")); // NOI18N
-
-        org.openide.awt.Mnemonics.setLocalizedText(CiUpdateBtn, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiUpdateBtn.text")); // NOI18N
-        CiUpdateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CiUpdateBtnActionPerformed(evt);
-            }
-        });
-
-        org.openide.awt.Mnemonics.setLocalizedText(CiPath, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiPath.text")); // NOI18N
-
-        org.openide.awt.Mnemonics.setLocalizedText(CiVersionLabel, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiVersionLabel.text")); // NOI18N
-
-        org.openide.awt.Mnemonics.setLocalizedText(CiVersion, org.openide.util.NbBundle.getMessage(AvailablePanel.class, "AvailablePanel.CiVersion.text")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -90,20 +70,7 @@ final class AvailablePanel extends javax.swing.JPanel {
                     .addComponent(CiPluginDescriptionLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(CiPluginInstallBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(CiUpdateBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(CiPathLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CiPath))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(CiVersionLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(CiVersion)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(CiPluginInstallBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -115,33 +82,13 @@ final class AvailablePanel extends javax.swing.JPanel {
                 .addComponent(CiPluginDescriptionLable, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CiPluginInstallBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CiUpdateBtn)
-                    .addComponent(CiPathLabel)
-                    .addComponent(CiPath))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(CiVersionLabel)
-                    .addComponent(CiVersion))
-                .addGap(21, 21, 21))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void CiPluginInstallBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CiPluginInstallBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CiPluginInstallBtnActionPerformed
-
-    private void CiUpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CiUpdateBtnActionPerformed
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle("Select CodeIgniter Project Folder..");
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(false);
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            CiPath.setText(chooser.getCurrentDirectory().toString());
-        }
-    }//GEN-LAST:event_CiUpdateBtnActionPerformed
 
     void load() {
         // TODO read settings and initialize GUI
@@ -151,7 +98,6 @@ final class AvailablePanel extends javax.swing.JPanel {
         // someCheckBox.setSelected(NbPreferences.forModule(AvailablePanel.class).getBoolean("someFlag", false));
         // or:
         // someTextField.setText(SomeSystemOption.getDefault().getSomeStringProperty());
-        CiPath.setText((NbPreferences.forModule(AvailablePanel.class).get("CiPath", CiPath.getText())));
     }
 
     void store() {
@@ -162,7 +108,6 @@ final class AvailablePanel extends javax.swing.JPanel {
         // NbPreferences.forModule(AvailablePanel.class).putBoolean("someFlag", someCheckBox.isSelected());
         // or:
         // SomeSystemOption.getDefault().setSomeStringProperty(someTextField.getText());
-        NbPreferences.forModule(AvailablePanel.class).put("CiPath", CiPath.getText());
     }
 
     boolean valid() {
@@ -171,14 +116,9 @@ final class AvailablePanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel CiPath;
-    private javax.swing.JLabel CiPathLabel;
     private javax.swing.JLabel CiPluginDescriptionLable;
     private javax.swing.JButton CiPluginInstallBtn;
     private javax.swing.JTable CiPluginListTable;
-    private javax.swing.JButton CiUpdateBtn;
-    private javax.swing.JLabel CiVersion;
-    private javax.swing.JLabel CiVersionLabel;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

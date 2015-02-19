@@ -17,12 +17,13 @@ import org.openide.util.Lookup;
         location = "CodeIgniter",
         displayName = "#AdvancedOption_DisplayName_Available",
         keywords = "#AdvancedOption_Keywords_Available",
-        keywordsCategory = "CodeIgniter/Available"
+        keywordsCategory = "CodeIgniter/Available",
+        position = 2
 )
 @org.openide.util.NbBundle.Messages({"AdvancedOption_DisplayName_Available=Available", "AdvancedOption_Keywords_Available=Available"})
-public final class AvailableOptionsPanelController extends OptionsPanelController {
+public final class AvailablePluginsOptionsPanelController extends OptionsPanelController {
 
-    private AvailablePanel panel;
+    private AvailablePluginsPanel panel;
     private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private boolean changed;
 
@@ -69,9 +70,9 @@ public final class AvailableOptionsPanelController extends OptionsPanelControlle
         pcs.removePropertyChangeListener(l);
     }
 
-    private AvailablePanel getPanel() {
+    private AvailablePluginsPanel getPanel() {
         if (panel == null) {
-            panel = new AvailablePanel(this);
+            panel = new AvailablePluginsPanel(this);
         }
         return panel;
     }
