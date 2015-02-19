@@ -5,6 +5,7 @@
  */
 package com.codeigniter.netbeans.navigator;
 
+import com.codeigniter.netbeans.shared.FileExtractor;
 import javax.swing.text.Document;
 import org.netbeans.api.editor.mimelookup.MimeRegistration;
 import org.netbeans.lib.editor.hyperlink.spi.HyperlinkProviderExt;
@@ -20,7 +21,6 @@ import org.openide.filesystems.FileObject;
 @MimeRegistration(mimeType = "text/x-php5", service = HyperlinkProviderExt.class)
 public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
     
-    private static final String VIEW_PATH = "application/views/";
     private FileObject view;
     
     @Override
@@ -36,9 +36,9 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
         if (extendedPath == null) {
             return false;
         }
-        extendedPath = VIEW_PATH + extendedPath + ".php";
+        extendedPath = FileExtractor.VIEW_PATH + extendedPath + ".php";
         
-        FileObject parent = getCiRoot(docObject);
+        FileObject parent = FileExtractor.getCiRoot(docObject);
         if (parent == null) {
             return false;
         }
