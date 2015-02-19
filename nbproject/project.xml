@@ -121,10 +121,13 @@
             <public-packages>
                 <package>com.codeigniter.netbeans</package>
                 <package>com.codeigniter.netbeans.completer</package>
+                <package>com.codeigniter.netbeans.documentation</package>
                 <package>com.codeigniter.netbeans.generator</package>
                 <package>com.codeigniter.netbeans.manager</package>
                 <package>com.codeigniter.netbeans.misc</package>
                 <package>com.codeigniter.netbeans.navigator</package>
+                <package>com.codeigniter.netbeans.shared</package>
+                <package>com.codeigniter.netbeans.shared.Assets</package>
                 <package>com.codeigniter.netbeans.starter</package>
             </public-packages>
         </data>
