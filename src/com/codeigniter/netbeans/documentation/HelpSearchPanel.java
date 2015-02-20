@@ -40,10 +40,12 @@ public class HelpSearchPanel extends javax.swing.JPanel {
 
         searchTextField = new javax.swing.JTextField();
 
+        setPreferredSize(new java.awt.Dimension(150, 35));
+
         searchTextField.setForeground(java.awt.Color.gray);
         searchTextField.setText(org.openide.util.NbBundle.getMessage(HelpSearchPanel.class, "HelpSearchPanel.searchTextField.text")); // NOI18N
         searchTextField.setToolTipText(org.openide.util.NbBundle.getMessage(HelpSearchPanel.class, "HelpSearchPanel.searchTextField.toolTipText")); // NOI18N
-        searchTextField.setPreferredSize(new java.awt.Dimension(150, 28));
+        searchTextField.setPreferredSize(new java.awt.Dimension(150, 30));
         searchTextField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 searchTextFieldFocusGained(evt);
@@ -62,13 +64,13 @@ public class HelpSearchPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(searchTextField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2))
         );
     }// </editor-fold>//GEN-END:initComponents
 
