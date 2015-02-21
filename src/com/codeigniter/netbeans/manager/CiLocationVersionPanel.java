@@ -5,7 +5,13 @@
  */
 package com.codeigniter.netbeans.manager;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.swing.JFileChooser;
+import org.openide.util.Exceptions;
 import org.openide.util.NbPreferences;
 
 final class CiLocationVersionPanel extends javax.swing.JPanel {
@@ -92,7 +98,17 @@ final class CiLocationVersionPanel extends javax.swing.JPanel {
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.setAcceptAllFileFilterUsed(false);
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            CiPath.setText(chooser.getSelectedFile().toString());
+            String location = chooser.getSelectedFile().toString();
+            // check framework exists
+            String coreCi = location + "/system/core/CodeIgniter.php";
+            String version = "None";
+            try {
+                version = loadCiVersion(coreCi);
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
+            CiPath.setText(location);
+            CiVersion.setText(version);
         }
     }//GEN-LAST:event_CiUpdateButtonActionPerformed
 
@@ -105,6 +121,7 @@ final class CiLocationVersionPanel extends javax.swing.JPanel {
         // or:
         // someTextField.setText(SomeSystemOption.getDefault().getSomeStringProperty());
         CiPath.setText((NbPreferences.forModule(AvailablePluginsPanel.class).get("CiPath", CiPath.getText())));
+        CiPath.setText((NbPreferences.forModule(AvailablePluginsPanel.class).get("CiVersion", CiVersion.getText())));
     }
 
     void store() {
@@ -116,6 +133,7 @@ final class CiLocationVersionPanel extends javax.swing.JPanel {
         // or:
         // SomeSystemOption.getDefault().setSomeStringProperty(someTextField.getText());
         NbPreferences.forModule(AvailablePluginsPanel.class).put("CiPath", CiPath.getText());
+        NbPreferences.forModule(AvailablePluginsPanel.class).put("CiVersion", CiVersion.getText());
     }
 
     boolean valid() {
@@ -130,4 +148,24 @@ final class CiLocationVersionPanel extends javax.swing.JPanel {
     private javax.swing.JLabel CiVersion;
     private javax.swing.JLabel CiVersionLabel;
     // End of variables declaration//GEN-END:variables
+
+    private String loadCiVersion(String coreCi) throws IOException {
+        String version = "None";
+        FileInputStream fis = new FileInputStream(new File(coreCi));
+	BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+ 
+	String line = null;
+	while ((line = br.readLine()) != null) {
+            if (line.toLowerCase().contains("CI_VERSION".toLowerCase()))
+            {
+                String[] tokens = line.split("[,]");
+                tokens = tokens[1].split("[']");
+                version = tokens[1];
+                break;
+            }
+	}
+	br.close();
+        
+        return version;
+    }
 }
