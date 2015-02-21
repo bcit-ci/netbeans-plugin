@@ -121,7 +121,7 @@ final class CiLocationVersionPanel extends javax.swing.JPanel {
         // or:
         // someTextField.setText(SomeSystemOption.getDefault().getSomeStringProperty());
         CiPath.setText((NbPreferences.forModule(AvailablePluginsPanel.class).get("CiPath", CiPath.getText())));
-        CiPath.setText((NbPreferences.forModule(AvailablePluginsPanel.class).get("CiVersion", CiVersion.getText())));
+        CiVersion.setText((NbPreferences.forModule(AvailablePluginsPanel.class).get("CiVersion", CiPath.getText())));
     }
 
     void store() {
