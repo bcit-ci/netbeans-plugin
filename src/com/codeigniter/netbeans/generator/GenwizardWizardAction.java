@@ -48,6 +48,19 @@ public final class GenwizardWizardAction implements ActionListener {
         wiz.setTitle("Generator");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             // do something
+            String name = (String) wiz.getProperty("name");
+            String selection = (String) wiz.getProperty("selection");
+            int select = Integer.parseInt(selection);
+            switch(select){
+                case 0: // create new Model
+                    break;
+                case 1: // create new View
+                    break;
+                case 2: // create new Controller
+                    break;
+                default: // improper input
+                    break;
+            }
         }
     }
 
