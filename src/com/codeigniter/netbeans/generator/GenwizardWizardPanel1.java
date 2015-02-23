@@ -5,11 +5,13 @@
  */
 package com.codeigniter.netbeans.generator;
 
+import javax.swing.JTextField;
 import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class GenwizardWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class GenwizardWizardPanel1 implements WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     /**
      * The visual component that displays this panel. If you need to access the
@@ -63,6 +65,18 @@ public class GenwizardWizardPanel1 implements WizardDescriptor.Panel<WizardDescr
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         // use wiz.putProperty to remember current panel state
+        wiz.putProperty("name", getComponent().getNameField().getText());
+        wiz.putProperty("selection", getComponent().getList().getSelectedIndex());
     }
-
+    
+    @Override
+    public void validate() throws WizardValidationException{
+        String name = component.getNameField().getText();
+        if (name.equals("")){
+            throw new WizardValidationException(null, "Invalid Name", null);
+        }
+        if (component.getList().isSelectionEmpty()){
+            throw new WizardValidationException(null, "No selection made", null);
+        }
+    }
 }
