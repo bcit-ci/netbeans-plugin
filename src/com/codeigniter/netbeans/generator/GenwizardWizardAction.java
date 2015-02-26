@@ -21,8 +21,6 @@ import org.openide.awt.ActionRegistration;
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
 @ActionID(category="Wizard", id="com.codeigniter.netbeans.generator.GenwizardWizardAction")
-@ActionRegistration(displayName="Open Generator Wizard")
-@ActionReference(path="Menu/Tools", position=10)
 public final class GenwizardWizardAction implements ActionListener {
 
     @Override
@@ -50,6 +48,19 @@ public final class GenwizardWizardAction implements ActionListener {
         wiz.setTitle("Generator");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             // do something
+            String name = (String) wiz.getProperty("name");
+            String selection = (String) wiz.getProperty("selection");
+            int select = Integer.parseInt(selection);
+            switch(select){
+                case 0: // create new Model
+                    break;
+                case 1: // create new View
+                    break;
+                case 2: // create new Controller
+                    break;
+                default: // improper input
+                    break;
+            }
         }
     }
 

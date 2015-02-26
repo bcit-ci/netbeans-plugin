@@ -21,7 +21,7 @@ import org.openide.awt.ActionRegistration;
 import org.openide.util.NbBundle.Messages;
 
 @ActionID(
-        category = "File",
+        category = "CodeIgniter",
         id = "com.codeigniter.netbeans.generator.generatorAction"
 )
 @ActionRegistration(
@@ -29,11 +29,9 @@ import org.openide.util.NbBundle.Messages;
         displayName = "#CTL_generatorAction"
 )
 @ActionReferences({
-    @ActionReference(path = "Menu/File", position = -100),
-    @ActionReference(path = "Toolbars/File", position = -100),
-    @ActionReference(path = "Shortcuts", name = "DS-A")
+    @ActionReference(path = "Toolbars/CodeIgniter", position = -100)
 })
-@Messages("CTL_generatorAction=New Files")
+@Messages("CTL_generatorAction=CI Generator")
 public final class generatorAction implements ActionListener {
 
     @Override

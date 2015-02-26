@@ -15,7 +15,7 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.actions.Presenter;
 
 @ActionID(
-        category = "File",
+        category = "CodeIgniter",
         id = "com.codeigniter.netbeans.CISearchToolbar"
 )
 @ActionRegistration(
@@ -23,7 +23,7 @@ import org.openide.util.actions.Presenter;
         lazy = false
 )
 @ActionReferences({
-    @ActionReference(path = "Toolbars/File", position = 0)
+    @ActionReference(path = "Toolbars/CodeIgniter", position = 100)
 })
 @Messages("CTL_CISearchToolbar=Search CI Docs")
 public final class CISearchToolbar extends AbstractAction implements Presenter.Toolbar {
