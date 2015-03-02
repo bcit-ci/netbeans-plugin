@@ -43,7 +43,6 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
             return false;
         }
         view = parent.getFileObject(extendedPath);
-        System.out.println(extendedPath);
         
         return true;
     }

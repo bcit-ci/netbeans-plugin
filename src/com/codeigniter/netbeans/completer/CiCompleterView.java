@@ -12,18 +12,19 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledDocument;
 import org.netbeans.api.editor.completion.Completion;
+import org.netbeans.api.editor.mimelookup.MimeRegistration;
 import org.netbeans.api.lexer.Token;
 import org.netbeans.api.lexer.TokenSequence;
 import org.netbeans.modules.editor.NbEditorUtilities;
 import org.netbeans.modules.php.editor.lexer.PHPTokenId;
 import org.netbeans.spi.editor.completion.CompletionItem;
+import org.netbeans.spi.editor.completion.CompletionProvider;
 import org.netbeans.spi.editor.completion.CompletionResultSet;
 import org.netbeans.spi.editor.completion.CompletionTask;
 import org.netbeans.spi.editor.completion.support.AsyncCompletionQuery;
@@ -36,12 +37,15 @@ import org.openide.util.Exceptions;
  *
  * @author Tamaki_Sakura
  */
-//@MimeRegistration(mimeType = "text/x-php5", service = CompletionProvider.class)
+@MimeRegistration(mimeType = "text/x-php5", service = CompletionProvider.class)
 public class CiCompleterView extends CiCompleterProviderBase {
 
     @Override
     public CompletionTask createTask(int i, JTextComponent jtc) {
-        //TODO: We may have to do Something
+        if (i != CompletionProvider.COMPLETION_QUERY_TYPE) {
+            return null;
+        }
+        
         AsyncCompletionQuery mViewCompletionQuery
                 = new CiViewAsyncCompletionQuery();
         return new AsyncCompletionTask(mViewCompletionQuery, jtc);
@@ -49,13 +53,22 @@ public class CiCompleterView extends CiCompleterProviderBase {
 
     @Override
     public int getAutoQueryTypes(JTextComponent jtc, String string) {
-        //TODO: We may have to do Something
         return 0;
     }
     
     public static class CiViewAsyncCompletionQuery extends AsyncCompletionQuery {
         @Override
-        protected void query(CompletionResultSet set, Document doc, int offset) {
+        protected void query(
+                CompletionResultSet completionSet, 
+                Document doc, int offset) {
+            realQuery(completionSet, doc, offset);
+            completionSet.finish();
+        }
+        
+        private void realQuery(
+                CompletionResultSet completionSet, 
+                Document doc, int offset) {
+            
             TokenSequence<PHPTokenId> tokens = PHPDocumentParser.getTokenSequence(doc);
             if (tokens == null) {
                 return;
@@ -81,29 +94,26 @@ public class CiCompleterView extends CiCompleterProviderBase {
             int startOffset = tokens.offset() + 1;
             int removeLength = token.length() - 2;
                  
-            String path = FileExtractor.VIEW_PATH + parent.getPath();
+            String basePath = parent.getFileObject(FileExtractor.VIEW_PATH).getPath();
             List<String> phpExtention = new ArrayList<String>();
             phpExtention.add("php");
             try {
-                //TODO: Due to the problem of gFFD, its recursive functionality is
-                //not good for my application. Think about changing it...
-                List<File> viewFile = FileExtractor.getFilesFromDirectory(
-                        new File(path), phpExtention, false);
+                File base = new File(basePath);
+                List<File> viewFiles = FileExtractor.getFilesFromDirectory(
+                        base, phpExtention, true);
                 
-                for (File vf: viewFile) {
+                for (File vf: viewFiles) {        
                     CiViewCompletionItem vfci = 
-                            new CiViewCompletionItem(vf.getName(), 
+                            new CiViewCompletionItem(
+                                    base.toURI().relativize(vf.toURI()).getPath(),
                                     startOffset, removeLength);
-                    //TODO: We may have to do Something
-                    set.addItem(vfci);
+                    completionSet.addItem(vfci);
                 }
+                
             } catch (Exception ex) {
                 Exceptions.printStackTrace(ex);
             }
-                   
-            set.finish();
         }
-        
     }
     
     public static class CiViewCompletionItem implements CompletionItem {
@@ -113,7 +123,7 @@ public class CiCompleterView extends CiCompleterProviderBase {
         private int removeLength;
         
         public CiViewCompletionItem(String view, int start, int remove) {
-            text = view;
+            text = view.substring(0, view.length() - 4);
             startIndex = start;
             removeLength = remove;
         }
