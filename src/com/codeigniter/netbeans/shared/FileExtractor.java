@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import org.openide.filesystems.FileObject;
 
 /**
  *
@@ -22,6 +24,11 @@ import java.util.List;
  *  
  */
 public abstract class FileExtractor {
+    
+    public static final String VIEW_PATH = "application/views/";
+    
+    private static final String[] APP_BASE
+            = {"cache", "config", "controllers", "core", "helpers", "models"};
     
     /**
      * 
@@ -105,5 +112,44 @@ public abstract class FileExtractor {
         }
         
         return retval;
+    }
+    
+    /**
+     * Get the CodeIgniter Root for any file in application folder
+     * 
+     * @param doc FileObject document
+     * @return root
+     */
+    public static FileObject getCiRoot(FileObject doc) {
+        //TODO: Need Talk
+        //What is the best way to know the "root" directory of CodeIgniter?
+        
+        while (doc != null) {
+            doc = doc.getParent();
+            FileObject[] children = doc.getChildren();
+            int count = 0;
+            
+            for (FileObject child: children) {
+                for (String folder: APP_BASE) {
+                    if (child
+                            .getName()
+                            .equals(folder.toLowerCase(Locale.ENGLISH))) {
+                        count++;
+                        break;
+                    }
+                }
+            }
+            
+            if (count == APP_BASE.length) {
+                break;
+            }
+        }
+        
+        if (doc == null) {
+            return null;
+        }
+        
+        FileObject root = doc.getParent();
+        return root;
     }
 }
