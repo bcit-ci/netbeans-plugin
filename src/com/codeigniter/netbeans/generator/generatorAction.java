@@ -8,11 +8,14 @@ package com.codeigniter.netbeans.generator;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import org.openide.DialogDisplayer;
+import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -60,6 +63,63 @@ public final class generatorAction implements ActionListener {
         wiz.setTitle("Generator");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             // do something
+            String name = (String) wiz.getProperty("name");
+            int selection = (Integer) wiz.getProperty("selection");
+            String path;
+            switch(selection){
+                case 0:
+                    path = "PROJECT_ROOT/application/models/";
+                    try{
+                        File file= new File (path+name+".php");
+                        FileWriter fw;
+                        if (file.exists()){
+                            fw = new FileWriter(file,true);//if file exists append to file. Works fine.
+                        }
+                        else{
+                            fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                        }
+                        fw.close();
+                    }
+                    catch(Exception ex){
+                        System.out.println("Exception: Not working!!");
+                    }
+                    break;
+                case 1:
+                    path = "PROJECT_ROOT/application/views/";
+                                        try{
+                        File file= new File (path+name+".php");
+                        FileWriter fw;
+                        if (file.exists()){
+                            fw = new FileWriter(file,true);//if file exists append to file. Works fine.
+                        }
+                        else{
+                            fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                        }
+                        fw.close();
+                    }
+                    catch(Exception ex){
+                        System.out.println("Exception: Not working!!");
+                    }
+                    break;
+                case 2:
+                    path = "PROJECT_ROOT/application/controllers/";
+                                        try{
+                        File file= new File (path+name+".php");
+                        FileWriter fw;
+                        if (file.exists()){
+                            fw = new FileWriter(file,true);//if file exists append to file. Works fine.
+                        }
+                        else{
+                            fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                        }
+                        fw.close();
+                    }
+                    catch(Exception ex){
+                        System.out.println("Exception: Not working!!");
+                    }
+                    break;
+            }        
+            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + " " + selection));
         }
     }
 }

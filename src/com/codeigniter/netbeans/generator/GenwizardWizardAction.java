@@ -15,8 +15,6 @@ import javax.swing.JComponent;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
 import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
-import org.openide.awt.ActionRegistration;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
@@ -48,19 +46,6 @@ public final class GenwizardWizardAction implements ActionListener {
         wiz.setTitle("Generator");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             // do something
-            String name = (String) wiz.getProperty("name");
-            String selection = (String) wiz.getProperty("selection");
-            int select = Integer.parseInt(selection);
-            switch(select){
-                case 0: // create new Model
-                    break;
-                case 1: // create new View
-                    break;
-                case 2: // create new Controller
-                    break;
-                default: // improper input
-                    break;
-            }
         }
     }
 

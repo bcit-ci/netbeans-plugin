@@ -5,7 +5,6 @@
  */
 package com.codeigniter.netbeans.generator;
 
-import javax.swing.JTextField;
 import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
 import org.openide.WizardValidationException;
@@ -65,8 +64,8 @@ public class GenwizardWizardPanel1 implements WizardDescriptor.ValidatingPanel<W
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         // use wiz.putProperty to remember current panel state
-        wiz.putProperty("name", getComponent().getNameField().getText());
-        wiz.putProperty("selection", getComponent().getList().getSelectedIndex());
+        wiz.putProperty("name", component.getNameField().getText());
+        wiz.putProperty("selection", component.getList().getSelectedIndex());
     }
     
     @Override
