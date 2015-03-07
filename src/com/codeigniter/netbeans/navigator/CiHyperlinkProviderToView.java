@@ -6,6 +6,7 @@
 package com.codeigniter.netbeans.navigator;
 
 import com.codeigniter.netbeans.shared.FileExtractor;
+import java.io.File;
 import javax.swing.text.Document;
 import org.netbeans.api.editor.mimelookup.MimeRegistration;
 import org.netbeans.lib.editor.hyperlink.spi.HyperlinkProviderExt;
@@ -42,7 +43,17 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
         if (parent == null) {
             return false;
         }
-        view = parent.getFileObject(extendedPath);
+        FileObject viewFileObject = parent.getFileObject(extendedPath);
+        if (viewFileObject == null) {
+            return false;
+        }
+        
+        File viewFile = new File(viewFileObject.getPath());
+        if (!(viewFile.exists())) {
+            return false;
+        } else {
+            view = viewFileObject;
+        }
         
         return true;
     }
