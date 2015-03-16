@@ -17,6 +17,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.ImageIcon;
+import org.openide.util.ImageUtilities;
 
 /**
  *
@@ -27,12 +29,15 @@ import java.util.List;
  */
 public class CentralManager {
     
+    public static final ImageIcon ICON = 
+            new ImageIcon(ImageUtilities.loadImage("com/codeigniter/netbeans/generator/cilogo16.png"));
+    
     private static CentralManager instance = null;
     private List<CiClass> ciClasses = null; 
     private Hashtable<String, List<CiClass>> ciFuncs = null;
     private static final String CI_CLASSES_FILENAME = "./src/com/codeigniter/netbeans/documentation/ciDoc.ser";
-    private static final String CI_SYSTEM_FOLDER = "/Applications/XAMPP/htdocs/system3/";
-    
+    private static final String CI_SYSTEM_FOLDER = "/Applications/XAMPP/htdocs/system3/";   
+            
     private CentralManager() {
         
     }
