@@ -5,6 +5,7 @@
  */
 package com.codeigniter.netbeans.completer;
 
+import com.codeigniter.netbeans.shared.CentralManager;
 import com.codeigniter.netbeans.shared.FileExtractor;
 import com.codeigniter.netbeans.shared.PHPDocumentParser;
 import java.awt.Color;
@@ -154,8 +155,7 @@ public class CiCompleterView extends CiCompleterProviderBase {
 
         @Override
         public void render(Graphics grphcs, Font font, Color color, Color color1, int i, int i1, boolean bln) {
-            //TODO: Add Icon here
-            CompletionUtilities.renderHtml(null, 
+            CompletionUtilities.renderHtml(CentralManager.ICON, 
                     text, null, grphcs, font, color, i, i1, bln);
         }
 
