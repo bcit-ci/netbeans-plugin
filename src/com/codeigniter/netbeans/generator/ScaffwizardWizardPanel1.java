@@ -7,25 +7,24 @@ package com.codeigniter.netbeans.generator;
 
 import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
-import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class GenwizardWizardPanel1 implements WizardDescriptor.ValidatingPanel<WizardDescriptor> {
+public class ScaffwizardWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor> {
 
     /**
      * The visual component that displays this panel. If you need to access the
      * component from this class, just use getComponent().
      */
-    private GenwizardVisualPanel1 component;
+    private ScaffwizardVisualPanel1 component;
 
     // Get the visual component for the panel. In this template, the component
     // is kept separate. This can be more efficient: if the wizard is created
     // but never displayed, or not all panels are displayed, it is better to
     // create only those which really need to be visible.
     @Override
-    public GenwizardVisualPanel1 getComponent() {
+    public ScaffwizardVisualPanel1 getComponent() {
         if (component == null) {
-            component = new GenwizardVisualPanel1();
+            component = new ScaffwizardVisualPanel1();
         }
         return component;
     }
@@ -64,18 +63,6 @@ public class GenwizardWizardPanel1 implements WizardDescriptor.ValidatingPanel<W
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         // use wiz.putProperty to remember current panel state
-        wiz.putProperty("name", component.getNameField().getText());
-        wiz.putProperty("selection", component.getList().getSelectedIndex());
     }
-    
-    @Override
-    public void validate() throws WizardValidationException{
-        String name = component.getNameField().getText();
-        if (name.equals("")){
-            throw new WizardValidationException(null, "Invalid Name", null);
-        }
-        if (component.getList().isSelectionEmpty()){
-            throw new WizardValidationException(null, "No selection made", null);
-        }
-    }
+
 }

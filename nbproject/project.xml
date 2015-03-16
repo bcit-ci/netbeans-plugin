@@ -25,6 +25,15 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.netbeans.modules.editor.completion</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>1</release-version>
+                        <specification-version>1.40.1.2</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.netbeans.modules.editor.lib</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -78,6 +87,24 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.netbeans.modules.projectapi</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>1</release-version>
+                        <specification-version>1.60.2</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
+                    <code-name-base>org.netbeans.modules.projectuiapi</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <release-version>1</release-version>
+                        <specification-version>1.78.1.8</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.openide.awt</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -102,6 +129,14 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
+                    <code-name-base>org.openide.loaders</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>7.57.2</specification-version>
+                    </run-dependency>
+                </dependency>
+                <dependency>
                     <code-name-base>org.openide.util</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
@@ -121,10 +156,13 @@
             <public-packages>
                 <package>com.codeigniter.netbeans</package>
                 <package>com.codeigniter.netbeans.completer</package>
+                <package>com.codeigniter.netbeans.documentation</package>
                 <package>com.codeigniter.netbeans.generator</package>
                 <package>com.codeigniter.netbeans.manager</package>
                 <package>com.codeigniter.netbeans.misc</package>
                 <package>com.codeigniter.netbeans.navigator</package>
+                <package>com.codeigniter.netbeans.shared</package>
+                <package>com.codeigniter.netbeans.shared.Assets</package>
                 <package>com.codeigniter.netbeans.starter</package>
             </public-packages>
         </data>
