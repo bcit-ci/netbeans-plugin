@@ -67,7 +67,7 @@ public class GenwizardWizardPanel1 implements WizardDescriptor.ValidatingPanel<W
         wiz.putProperty("name", component.getNameField().getText());
         wiz.putProperty("selection", component.getList().getSelectedIndex());
     }
-    
+
     @Override
     public void validate() throws WizardValidationException{
         String name = component.getNameField().getText();

@@ -95,7 +95,6 @@ public class GenPanel extends javax.swing.JPanel {
         // TODO add your handling code here:
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
                 panels.add(new GenwizardWizardPanel1());
-                panels.add(new GenwizardWizardPanel2());
                 String[] steps = new String[panels.size()];
                 for (int i = 0; i < panels.size(); i++) {
                     Component c = panels.get(i).getComponent();
@@ -121,52 +120,57 @@ public class GenPanel extends javax.swing.JPanel {
                     String path;
                     switch (selection) {
                         case 0:
-                            path = "PROJECT_ROOT/application/models/";
+                            path = "project_root/application/models/";
                             try {
                                 File file = new File(path + name + ".php");
                                 FileWriter fw;
                                 if (file.exists()) {
-                                    fw = new FileWriter(file, true);//if file exists append to file. Works fine.
+                                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
                                 } else {
                                     fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                                    fw.close();
                                 }
-                                fw.close();
+                                
                             } catch (Exception ex) {
-                                System.out.println("Exception: Not working!!");
+                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + "Model " + selection));
+                                System.out.println(ex);
                             }
                             break;
                         case 1:
-                            path = "PROJECT_ROOT/application/views/";
+                            path = "project_root/application/views/";
                             try {
                                 File file = new File(path + name + ".php");
                                 FileWriter fw;
                                 if (file.exists()) {
-                                    fw = new FileWriter(file, true);
+                                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
                                 } else {
                                     fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                                    fw.close();
                                 }
-                                fw.close();
+                                
                             } catch (Exception ex) {
-                                System.out.println("Exception: Not working!!");
+                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + " View " + selection));
+                                 System.out.println(ex);
                             }
                             break;
                         case 2:
-                            path = "PROJECT_ROOT/application/controllers/";
+                            path = "project_root/application/controllers/";
                             try {
                                 File file = new File(path + name + ".php");
                                 FileWriter fw;
                                 if (file.exists()) {
-                                    fw = new FileWriter(file, true);
+                                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
                                 } else {
                                     fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                                    fw.close();
                                 }
-                                fw.close();
+                                
                             } catch (Exception ex) {
-                                System.out.println("Exception: Not working!!");
+                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + " Controller " + selection));
+                                 System.out.println(ex);
                             }
                             break;
                     }
-                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + " " + selection));
 
                 }
     }//GEN-LAST:event_nfButtonActionPerformed
@@ -195,6 +199,24 @@ public class GenPanel extends javax.swing.JPanel {
                 wiz.setTitle("Scaffolding");
                 if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
                     // do something
+                    String Dname = (String) wiz.getProperty("Dname");
+                    String Tname = (String) wiz.getProperty("Tname");
+                    String Path;
+                    Path = "project_root/application/models/";
+                    try {
+                                File file = new File(Path + Tname + ".php");
+                                FileWriter fw;
+                                if (file.exists()) {
+                                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
+                                } else {
+                                    fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                                    fw.close();
+                                }
+                                
+                            } catch (Exception ex) {
+                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(Tname + "Create Unsuccessful" +Dname));
+                                 System.out.println(ex);
+                            }
                 }
     }//GEN-LAST:event_sButtonActionPerformed
 
