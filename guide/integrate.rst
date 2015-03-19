@@ -18,6 +18,8 @@ There are several ways to use the integrated help:
     c) If the method is not a CodeIgniter method, an error tone will play. Otherwise:
         - If the method name is not ambiguous (i.e. only one class has a method with that name), the default browser will show the documentation for the selected method
         - Otherwise, you will be shown the CodeIgniter User guide search results for that method
+3) Use the shortcut Ctrl+Alt+D when the carat is on the method you wish to see the documentation for. 
+    This has the same behaviour as (2)
 
 ************
 How It Works
