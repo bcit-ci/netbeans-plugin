@@ -14,18 +14,18 @@ import java.util.List;
 import javax.swing.JComponent;
 import org.openide.DialogDisplayer;
 import org.openide.WizardDescriptor;
-import org.openide.awt.ActionID;
 
 // An example action demonstrating how the wizard could be called from within
 // your code. You can move the code below wherever you need, or register an action:
-@ActionID(category="Wizard", id="com.codeigniter.netbeans.generator.GenwizardWizardAction")
+// @ActionID(category="...", id="com.codeigniter.netbeans.generator.GenwizardWizardAction")
+// @ActionRegistration(displayName="Open Genwizard Wizard")
+// @ActionReference(path="Menu/Tools", position=...)
 public final class GenwizardWizardAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
         panels.add(new GenwizardWizardPanel1());
-        panels.add(new GenwizardWizardPanel2());
         String[] steps = new String[panels.size()];
         for (int i = 0; i < panels.size(); i++) {
             Component c = panels.get(i).getComponent();
@@ -43,7 +43,7 @@ public final class GenwizardWizardAction implements ActionListener {
         WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
         // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
         wiz.setTitleFormat(new MessageFormat("{0}"));
-        wiz.setTitle("Generator");
+        wiz.setTitle("...dialog title...");
         if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
             // do something
         }

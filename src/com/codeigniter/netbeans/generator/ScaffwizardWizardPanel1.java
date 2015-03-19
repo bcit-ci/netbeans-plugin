@@ -7,9 +7,10 @@ package com.codeigniter.netbeans.generator;
 
 import javax.swing.event.ChangeListener;
 import org.openide.WizardDescriptor;
+import org.openide.WizardValidationException;
 import org.openide.util.HelpCtx;
 
-public class ScaffwizardWizardPanel1 implements WizardDescriptor.Panel<WizardDescriptor> {
+public class ScaffwizardWizardPanel1 implements WizardDescriptor.ValidatingPanel<WizardDescriptor> {
 
     /**
      * The visual component that displays this panel. If you need to access the
@@ -63,6 +64,20 @@ public class ScaffwizardWizardPanel1 implements WizardDescriptor.Panel<WizardDes
     @Override
     public void storeSettings(WizardDescriptor wiz) {
         // use wiz.putProperty to remember current panel state
+        wiz.putProperty("Dname", component.getDNameField().getText());
+        wiz.putProperty("Tname", component.getTNameField().getText());
+    }
+    
+    @Override
+    public void validate() throws WizardValidationException{
+        String Dname = component.getDNameField().getText();
+        if (Dname.equals("")){
+            throw new WizardValidationException(null, "Invalid DB Name", null);
+        }
+        String Tname = component.getTNameField().getText();
+        if (Tname.equals("")){
+            throw new WizardValidationException(null, "Invalid Table Name", null);
+        }
     }
 
 }
