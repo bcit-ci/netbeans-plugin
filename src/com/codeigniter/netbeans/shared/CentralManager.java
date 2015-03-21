@@ -131,7 +131,7 @@ public class CentralManager {
                 retval = true;
             }
             else {
-                System.err.println("Unable to find ciDoc.ser");
+                System.err.printf("Unable to find %s\n", CI_CLASSES_FILENAME);
             }            
         }
         catch (Exception e) {
