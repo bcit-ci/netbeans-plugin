@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -35,7 +36,8 @@ public class CentralManager {
     private static CentralManager instance = null;
     private List<CiClass> ciClasses = null; 
     private Hashtable<String, List<CiClass>> ciFuncs = null;
-    private static final String CI_CLASSES_FILENAME = "./src/com/codeigniter/netbeans/documentation/ciDoc.ser";
+    private static final String CI_CLASSES_FILENAME = "ciDoc.ser";
+    private static final String CI_CLASSES_BASEPATH = "src/com/codeigniter/netbeans/shared/";
     private static final String CI_SYSTEM_FOLDER = "/Applications/XAMPP/htdocs/system3/";   
             
     private CentralManager() {
@@ -100,7 +102,7 @@ public class CentralManager {
      */
     private void saveCiClasses() {
         try {
-            FileOutputStream fileOut = new FileOutputStream(CI_CLASSES_FILENAME);
+            FileOutputStream fileOut = new FileOutputStream(CI_CLASSES_BASEPATH + CI_CLASSES_FILENAME);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this.ciClasses);
             out.close();
@@ -118,12 +120,19 @@ public class CentralManager {
     private boolean loadCiClasses() {
         boolean retval = false;
         try {
-            FileInputStream fileIn = new FileInputStream(CI_CLASSES_FILENAME);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            this.ciClasses = (ArrayList<CiClass>)in.readObject();
-            in.close();
-            fileIn.close();
-            retval = true;
+            // Look in this package for the serialized file containing a list of all the CI methods
+            InputStream is = this.getClass().getResourceAsStream(CI_CLASSES_FILENAME);            
+            // Check if file was found
+            if (is != null) {
+                ObjectInputStream in = new ObjectInputStream(is);
+                this.ciClasses = (ArrayList<CiClass>)in.readObject();
+                in.close();
+                is.close();
+                retval = true;
+            }
+            else {
+                System.err.println("Unable to find ciDoc.ser");
+            }            
         }
         catch (Exception e) {
             e.printStackTrace(System.err);
@@ -133,7 +142,13 @@ public class CentralManager {
     }
     
     /**
-     *     This method updates the ciDoc.ser file
+     *     This method updates the file containing the list of CI methods & classes.
+     * There are several steps required to updating this file:
+     * 1) Delete the current file. Use CI_CLASSES_BASEPATH & CI_CLASSES_FILENAME to find it
+     * 2) Change the CI_SYSTEM_FOLDER variable to point to the directory containing the Code Igniter framework
+     * that is on YOUR system. This directory will be recursively searched for all libraries, helpers, & core CI files.
+     * It will then extract all classes and public method from these files.
+     * 3) Call this method and verify that the file has been created.
      * @param path The base path for the CI system folder
      */
     private void updateCiClasses(String path) {
