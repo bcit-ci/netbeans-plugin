@@ -14,7 +14,15 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import org.netbeans.api.project.FileOwnerQuery;
+import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectManager;
+import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import org.netbeans.spi.project.support.ant.EditableProperties;
+import org.netbeans.spi.project.support.ant.PropertyUtils;
 import org.openide.filesystems.FileObject;
+import org.openide.util.Exceptions;
+import org.openide.util.Mutex;
 
 /**
  *
@@ -24,6 +32,8 @@ import org.openide.filesystems.FileObject;
  *  
  */
 public abstract class FileExtractor {
+    
+    public static final String INCLUDE_PATH = "include.path";
     
     public static final String VIEW_PATH = "application/views/";
     
@@ -152,4 +162,39 @@ public abstract class FileExtractor {
         FileObject root = doc.getParent();
         return root;
     }
+    
+    /**
+     * 
+     * @param doc 
+     */
+    public static void addCompleteToIncludePath(final FileObject doc) {
+        ProjectManager.mutex().writeAccess(new Mutex.Action<Void>() {
+
+            @Override
+            public Void run() {
+                try {
+                    Project project = FileOwnerQuery.getOwner(getCiRoot(doc));
+                    if (project == null) {
+                        return null;
+                    }
+                    AntProjectHelper helper = project.getLookup().lookup(AntProjectHelper.class);
+                    if (helper == null) {
+                        return null;
+                    }   
+                    EditableProperties properties = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+                    String currentPaths[] = PropertyUtils.tokenizePath((properties.getProperty(INCLUDE_PATH)));
+                    
+                    
+                    properties.setProperty(INCLUDE_PATH, includePaths.toArray(new String[0]));
+                    helper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, properties);
+                    ProjectManager.getDefault().saveProject(project);
+                } catch (IOException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+                return null;
+            }
+            
+        });
+    }
+
 }
