@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -164,28 +166,51 @@ public abstract class FileExtractor {
     }
     
     /**
-     * 
-     * @param doc 
+     * Use the current PHp document as a pointer to add 
+     * auto completion file into the project path
+     * @param doc any document of the current project
      */
-    public static void addCompleteToIncludePath(final FileObject doc) {
+    public static void addCompleteToIncludePathFromDoc(final FileObject doc) {
+        FileObject ciRoot = getCiRoot(doc);
+        if (ciRoot == null) {
+             return;
+        }
+        Project project = FileOwnerQuery.getOwner(ciRoot);
+        if (project == null) {
+             return;
+        }
+        
+        addCompleteToIncludePath(ciRoot, project);            
+    }
+    
+    /**
+     * Add auto completion file into the project path
+     * @param ciRoot Root of CodeIgniter Project
+     * @param project the Project object of the PHP Project
+     */
+    public static void addCompleteToIncludePath(
+            final FileObject ciRoot, final Project project) {
         ProjectManager.mutex().writeAccess(new Mutex.Action<Void>() {
 
             @Override
             public Void run() {
                 try {
-                    Project project = FileOwnerQuery.getOwner(getCiRoot(doc));
-                    if (project == null) {
-                        return null;
-                    }
                     AntProjectHelper helper = project.getLookup().lookup(AntProjectHelper.class);
                     if (helper == null) {
                         return null;
                     }   
-                    EditableProperties properties = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
-                    String currentPaths[] = PropertyUtils.tokenizePath((properties.getProperty(INCLUDE_PATH)));
+                    FileObject target = ciRoot.getFileObject();
+                    
+                    EditableProperties properties 
+                            = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+                    String currentPaths[] 
+                            = PropertyUtils.tokenizePath((properties.getProperty(INCLUDE_PATH)));
+                    ArrayList<String> newPaths 
+                            = new ArrayList<String>(Arrays.asList(currentPaths));
                     
                     
-                    properties.setProperty(INCLUDE_PATH, includePaths.toArray(new String[0]));
+                    
+                    properties.setProperty(INCLUDE_PATH, newPaths.toArray(new String[0]));
                     helper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, properties);
                     ProjectManager.getDefault().saveProject(project);
                 } catch (IOException ex) {
@@ -195,6 +220,6 @@ public abstract class FileExtractor {
             }
             
         });
-    }
+    }  
 
 }
