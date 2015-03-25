@@ -38,6 +38,8 @@ public abstract class FileExtractor {
     public static final String INCLUDE_PATH = "include.path";
     
     public static final String VIEW_PATH = "application/views/";
+    public static final String MODEL_PATH = "application/models/";
+    public static final String CONTROLLER_PATH = "application/controllers/";
     
     private static final String[] APP_BASE
             = {"cache", "config", "controllers", "core", "helpers", "models"};
