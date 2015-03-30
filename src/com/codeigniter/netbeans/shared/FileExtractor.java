@@ -7,6 +7,7 @@ package com.codeigniter.netbeans.shared;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -201,7 +202,14 @@ public abstract class FileExtractor {
                     if (helper == null) {
                         return null;
                     }   
-                    FileObject target = ciRoot.getFileObject();
+                    
+                    ClassLoader cLoader = 
+                            Thread.currentThread().getContextClassLoader();
+                    URL url = cLoader.getResource("release/autocomplete.php");
+                    if (url == null) {
+                        return null;
+                    }
+                    String completionPath = url.getPath();
                     
                     EditableProperties properties 
                             = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
@@ -210,10 +218,22 @@ public abstract class FileExtractor {
                     ArrayList<String> newPaths 
                             = new ArrayList<String>(Arrays.asList(currentPaths));
                     
+                    for (String path: currentPaths) {
+                        if (path != null) {
+                            if (path.contains("autocomplete")) {
+                                return null;
+                            } else {
+                                newPaths.add(path);
+                            }
+                        }
+                    }
+                    newPaths.add(completionPath);
                     
-                    
-                    properties.setProperty(INCLUDE_PATH, newPaths.toArray(new String[0]));
-                    helper.putProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH, properties);
+                    properties.setProperty(
+                            INCLUDE_PATH, 
+                            newPaths.toArray(new String[0]));
+                    helper.putProperties(
+                            AntProjectHelper.PROJECT_PROPERTIES_PATH, properties);
                     ProjectManager.getDefault().saveProject(project);
                 } catch (IOException ex) {
                     Exceptions.printStackTrace(ex);
