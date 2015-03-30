@@ -12,9 +12,18 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
+import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ui.OpenProjects;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.loaders.DataObject;
+import org.openide.util.Lookup;
+import org.openide.util.Utilities;
+import org.openide.windows.TopComponent;
+import org.openide.nodes.Node;
 
 /**
  *
@@ -28,6 +37,16 @@ public class GenPanel extends javax.swing.JPanel {
     public GenPanel() {
         initComponents();
     }
+    
+     private String getProjectDirectory(final Project project) {
+            try {
+                FileObject projectDirectory = project.getProjectDirectory();
+                return FileUtil.toFile(projectDirectory).getAbsolutePath();
+            } catch (Exception e) {
+                System.out.println(e);
+                return null;
+            }
+        }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -118,9 +137,22 @@ public class GenPanel extends javax.swing.JPanel {
                     String name = (String) wiz.getProperty("name");
                     int selection = (Integer) wiz.getProperty("selection");
                     String path;
+                    Lookup lookup = Utilities.actionsGlobalContext(); 
+                    Project project = lookup.lookup(Project.class);
+                    if(project == null){
+                        TopComponent activeTC = TopComponent.getRegistry().getActivated();
+                        DataObject dataLookup = activeTC.getLookup().lookup(DataObject.class);
+                        path = FileUtil.toFile(dataLookup.getPrimaryFile()).getAbsolutePath();
+                    }
+                    else{
+                        FileObject projectDir = project.getProjectDirectory();
+                        path = projectDir.getPath();
+                    }
+                    System.out.println(path);
                     switch (selection) {
                         case 0:
-                            path = "project_root/application/models/";
+                            path = path + "/application/models/";
+                                    
                             try {
                                 File file = new File(path + name + ".php");
                                 FileWriter fw;
@@ -132,12 +164,11 @@ public class GenPanel extends javax.swing.JPanel {
                                 }
                                 
                             } catch (Exception ex) {
-                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + "Model " + selection));
                                 System.out.println(ex);
                             }
                             break;
                         case 1:
-                            path = "project_root/application/views/";
+                            path = path + "/application/views/";
                             try {
                                 File file = new File(path + name + ".php");
                                 FileWriter fw;
@@ -149,12 +180,11 @@ public class GenPanel extends javax.swing.JPanel {
                                 }
                                 
                             } catch (Exception ex) {
-                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + " View " + selection));
                                  System.out.println(ex);
                             }
                             break;
                         case 2:
-                            path = "project_root/application/controllers/";
+                            path = path + "/application/controllers/";
                             try {
                                 File file = new File(path + name + ".php");
                                 FileWriter fw;
@@ -166,7 +196,6 @@ public class GenPanel extends javax.swing.JPanel {
                                 }
                                 
                             } catch (Exception ex) {
-                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + " Controller " + selection));
                                  System.out.println(ex);
                             }
                             break;
@@ -202,7 +231,18 @@ public class GenPanel extends javax.swing.JPanel {
                     String Dname = (String) wiz.getProperty("Dname");
                     String Tname = (String) wiz.getProperty("Tname");
                     String Path;
-                    Path = "project_root/application/models/";
+                    Lookup lookup = Utilities.actionsGlobalContext(); 
+                    Project project = lookup.lookup(Project.class);
+                    if(project == null){
+                        TopComponent activeTC = TopComponent.getRegistry().getActivated();
+                        DataObject dataLookup = activeTC.getLookup().lookup(DataObject.class);
+                        Path = FileUtil.toFile(dataLookup.getPrimaryFile()).getAbsolutePath();
+                    }
+                    else{
+                        FileObject projectDir = project.getProjectDirectory();
+                        Path = projectDir.getPath();
+                    }
+                    Path = Path + "/application/models/";
                     try {
                                 File file = new File(Path + Tname + ".php");
                                 FileWriter fw;
@@ -214,7 +254,6 @@ public class GenPanel extends javax.swing.JPanel {
                                 }
                                 
                             } catch (Exception ex) {
-                                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(Tname + "Create Unsuccessful" +Dname));
                                  System.out.println(ex);
                             }
                 }
