@@ -6,8 +6,9 @@
 package com.codeigniter.netbeans.shared;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -203,14 +204,6 @@ public abstract class FileExtractor {
                         return null;
                     }   
                     
-                    ClassLoader cLoader = 
-                            Thread.currentThread().getContextClassLoader();
-                    URL url = cLoader.getResource("release/autocomplete.php");
-                    if (url == null) {
-                        return null;
-                    }
-                    String completionPath = url.getPath();
-                    
                     EditableProperties properties 
                             = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
                     String currentPaths[] 
@@ -227,7 +220,19 @@ public abstract class FileExtractor {
                             }
                         }
                     }
-                    newPaths.add(completionPath);
+                    
+                    InputStream is = this.getClass().getResourceAsStream(
+                            "/com/codeigniter/netbeans/completer/autocomplete.php");
+                    if (is == null) {
+                        return null;
+                    }
+                    String completionPath = ciRoot.getPath() + "../autocomplete.php";
+                    File completionFile = new File(completionPath);
+                    FileOutputStream os = new FileOutputStream(completionFile);
+                    while(is.available()>0) {
+                        os.write(is.read());
+                    }
+                    newPaths.add(completionFile.getPath());
                     
                     properties.setProperty(
                             INCLUDE_PATH, 
