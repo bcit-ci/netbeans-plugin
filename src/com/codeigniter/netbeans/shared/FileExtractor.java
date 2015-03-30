@@ -213,7 +213,7 @@ public abstract class FileExtractor {
                     
                     for (String path: currentPaths) {
                         if (path != null) {
-                            if (path.contains("autocomplete")) {
+                            if (path.contains("ci_autocomplete")) {
                                 return null;
                             } else {
                                 newPaths.add(path);
@@ -221,18 +221,8 @@ public abstract class FileExtractor {
                         }
                     }
                     
-                    InputStream is = this.getClass().getResourceAsStream(
-                            "/com/codeigniter/netbeans/completer/autocomplete.php");
-                    if (is == null) {
-                        return null;
-                    }
-                    String completionPath = ciRoot.getPath() + "../autocomplete.php";
-                    File completionFile = new File(completionPath);
-                    FileOutputStream os = new FileOutputStream(completionFile);
-                    while(is.available()>0) {
-                        os.write(is.read());
-                    }
-                    newPaths.add(completionFile.getPath());
+                    String target = getAutocompleteFolderPath(ciRoot);
+                    newPaths.add(target);
                     
                     properties.setProperty(
                             INCLUDE_PATH, 
@@ -248,5 +238,37 @@ public abstract class FileExtractor {
             
         });
     }  
+    
+    /**
+     * Get the auto complete file path.
+     * @param ciRoot the Root of codeigniter project where path start
+     * @return path 
+     * @throws IOException 
+     */
+    private static String getAutocompleteFolderPath(FileObject ciRoot) throws IOException {  
+        InputStream is = FileExtractor.class.getResourceAsStream(
+                "/com/codeigniter/netbeans/completer/autocomplete.php");
+        if (is == null) {
+            return null;
+        }
+        String completionFolderPath = ciRoot.getPath() + "/../ci_autocomplete_folder/";
+        String completionFilePath = completionFolderPath + "ci_autocomplete.php";
+        File completionFolder = new File(completionFolderPath);
+        if (!completionFolder.exists()) {
+            completionFolder.mkdirs();
+        } 
+        File completionFile = new File(completionFilePath);
+        if (!completionFile.exists()) {
+            completionFile.createNewFile();
+        } 
+        FileOutputStream os = new FileOutputStream(completionFile, false);
+        while (is.available() > 0) {
+            os.write(is.read());
+        }
+        is.close();
+        os.close();
+        
+        return completionFolder.getPath();
+    }
 
 }
