@@ -59,6 +59,9 @@ public class CiHyperlinkProviderToFile extends CiHyperlinkProviderBase {
     }
     
     /**
+     * Check if there is a corresponding relative path is refer
+     * to a file that is extended from a selection of folder
+     * and if there is, set the target object to be the file
      * 
      * @param targetBases a selection of possible bases
      * @param extendedPath the extended path from base
