@@ -20,13 +20,13 @@ import org.openide.filesystems.FileObject;
  * @author Tamaki_Sakura
  */
 @MimeRegistration(mimeType = "text/x-php5", service = HyperlinkProviderExt.class)
-public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
+public class CiHyperlinkProviderToFile extends CiHyperlinkProviderBase {
     
-    private FileObject view;
+    private FileObject target;
     
     @Override
     public boolean isHyperlinkPoint(Document doc, int offset, HyperlinkType ht) {
-        view = null;
+        target = null;
         FileObject docObject = NbEditorUtilities.getFileObject(doc);
         
         if (docObject == null) {
@@ -37,25 +37,12 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
         if (extendedPath == null) {
             return false;
         }
-        extendedPath = FileExtractor.VIEW_PATH + extendedPath + ".php";
         
-        FileObject parent = FileExtractor.getCiRoot(docObject);
-        if (parent == null) {
-            return false;
-        }
-        FileObject viewFileObject = parent.getFileObject(extendedPath);
-        if (viewFileObject == null) {
-            return false;
-        }
+        String targetBases[] = {
+            FileExtractor.VIEW_PATH, 
+            FileExtractor.MODEL_PATH};
         
-        File viewFile = new File(viewFileObject.getPath());
-        if (!(viewFile.exists())) {
-            return false;
-        } else {
-            view = viewFileObject;
-        }
-        
-        return true;
+        return getFileFromBase(targetBases, extendedPath, docObject);
     }
 
     @Override
@@ -66,9 +53,42 @@ public class CiHyperlinkProviderToView extends CiHyperlinkProviderBase {
     
     @Override
     public void performClickAction(Document doc, int offset, HyperlinkType ht) {
-        if (view != null) {
-            UiUtils.open(view, 0);
+        if (target != null) {
+            UiUtils.open(target, 0);
         }
+    }
+    
+    /**
+     * 
+     * @param targetBases a selection of possible bases
+     * @param extendedPath the extended path from base
+     * @param docObject the Fileobject of current document
+     * @return if there is a file from the selected bases
+     */
+    private boolean getFileFromBase(
+            String[] targetBases, String extendedPath, FileObject docObject) {
+        
+        for (String base: targetBases) {
+            String filePath = base + extendedPath + ".php";
+
+            FileObject parent = FileExtractor.getCiRoot(docObject);
+            if (parent == null) {
+                continue;
+            }
+            FileObject targetFileObject = parent.getFileObject(filePath);
+            if (targetFileObject == null) {
+                continue;
+            }
+
+            File targetFile = new File(targetFileObject.getPath());
+
+            if (targetFile.exists()) {
+                target = targetFileObject;
+                return true;
+            }
+        }
+        
+        return false;
     }
 
 }
