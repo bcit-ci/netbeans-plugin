@@ -42,7 +42,7 @@
  * to use in your controllers here
  * 
  */
-class Controller {};
+class CI_Controller {};
 
 /**
  * @property CI_DB_active_record $db
@@ -55,5 +55,5 @@ class Controller {};
  * to use in your models here.
  * 
  */
-class Model {};
+class CI_Model {};
 ?>
