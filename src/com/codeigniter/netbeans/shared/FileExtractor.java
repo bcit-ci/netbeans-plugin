@@ -6,15 +6,27 @@
 package com.codeigniter.netbeans.shared;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import org.netbeans.api.project.FileOwnerQuery;
+import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectManager;
+import org.netbeans.spi.project.support.ant.AntProjectHelper;
+import org.netbeans.spi.project.support.ant.EditableProperties;
+import org.netbeans.spi.project.support.ant.PropertyUtils;
 import org.openide.filesystems.FileObject;
+import org.openide.util.Exceptions;
+import org.openide.util.Mutex;
 
 /**
  *
@@ -25,7 +37,11 @@ import org.openide.filesystems.FileObject;
  */
 public abstract class FileExtractor {
     
+    public static final String INCLUDE_PATH = "include.path";
+    
     public static final String VIEW_PATH = "application/views/";
+    public static final String MODEL_PATH = "application/models/";
+    public static final String CONTROLLER_PATH = "application/controllers/";
     
     private static final String[] APP_BASE
             = {"cache", "config", "controllers", "core", "helpers", "models"};
@@ -152,4 +168,107 @@ public abstract class FileExtractor {
         FileObject root = doc.getParent();
         return root;
     }
+    
+    /**
+     * Use the current PHp document as a pointer to add 
+     * auto completion file into the project path
+     * @param doc any document of the current project
+     */
+    public static void addCompleteToIncludePathFromDoc(final FileObject doc) {
+        FileObject ciRoot = getCiRoot(doc);
+        if (ciRoot == null) {
+             return;
+        }
+        Project project = FileOwnerQuery.getOwner(ciRoot);
+        if (project == null) {
+             return;
+        }
+        
+        addCompleteToIncludePath(ciRoot, project);            
+    }
+    
+    /**
+     * Add auto completion file into the project path
+     * @param ciRoot Root of CodeIgniter Project
+     * @param project the Project object of the PHP Project
+     */
+    public static void addCompleteToIncludePath(
+            final FileObject ciRoot, final Project project) {
+        ProjectManager.mutex().writeAccess(new Mutex.Action<Void>() {
+
+            @Override
+            public Void run() {
+                try {
+                    AntProjectHelper helper = project.getLookup().lookup(AntProjectHelper.class);
+                    if (helper == null) {
+                        return null;
+                    }   
+                    
+                    EditableProperties properties 
+                            = helper.getProperties(AntProjectHelper.PROJECT_PROPERTIES_PATH);
+                    String currentPaths[] 
+                            = PropertyUtils.tokenizePath((properties.getProperty(INCLUDE_PATH)));
+                    ArrayList<String> newPaths 
+                            = new ArrayList<String>(Arrays.asList(currentPaths));
+                    
+                    for (String path: currentPaths) {
+                        if (path != null) {
+                            if (path.contains("ci_autocomplete")) {
+                                return null;
+                            } else {
+                                newPaths.add(path);
+                            }
+                        }
+                    }
+                    
+                    String target = getAutocompleteFolderPath(ciRoot);
+                    newPaths.add(target);
+                    
+                    properties.setProperty(
+                            INCLUDE_PATH, 
+                            newPaths.toArray(new String[0]));
+                    helper.putProperties(
+                            AntProjectHelper.PROJECT_PROPERTIES_PATH, properties);
+                    ProjectManager.getDefault().saveProject(project);
+                } catch (IOException ex) {
+                    Exceptions.printStackTrace(ex);
+                }
+                return null;
+            }
+            
+        });
+    }  
+    
+    /**
+     * Get the auto complete file path.
+     * @param ciRoot the Root of codeigniter project where path start
+     * @return path 
+     * @throws IOException 
+     */
+    private static String getAutocompleteFolderPath(FileObject ciRoot) throws IOException {  
+        InputStream is = FileExtractor.class.getResourceAsStream(
+                "/com/codeigniter/netbeans/completer/autocomplete.php");
+        if (is == null) {
+            return null;
+        }
+        String completionFolderPath = ciRoot.getPath() + "/../ci_autocomplete_folder/";
+        String completionFilePath = completionFolderPath + "ci_autocomplete.php";
+        File completionFolder = new File(completionFolderPath);
+        if (!completionFolder.exists()) {
+            completionFolder.mkdirs();
+        } 
+        File completionFile = new File(completionFilePath);
+        if (!completionFile.exists()) {
+            completionFile.createNewFile();
+        } 
+        FileOutputStream os = new FileOutputStream(completionFile, false);
+        while (is.available() > 0) {
+            os.write(is.read());
+        }
+        is.close();
+        os.close();
+        
+        return completionFolder.getPath();
+    }
+
 }

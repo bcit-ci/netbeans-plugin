@@ -46,6 +46,7 @@ public class CiCompleterView extends CiCompleterProviderBase {
         if (i != CompletionProvider.COMPLETION_QUERY_TYPE) {
             return null;
         }
+        initCodeComplete(jtc);
         
         AsyncCompletionQuery mViewCompletionQuery
                 = new CiViewAsyncCompletionQuery();

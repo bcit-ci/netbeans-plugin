@@ -6,15 +6,25 @@
 package com.codeigniter.netbeans.generator;
 
 import java.awt.Component;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
+import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ui.OpenProjects;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
 import org.openide.WizardDescriptor;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
+import org.openide.loaders.DataObject;
+import org.openide.util.Lookup;
+import org.openide.util.Utilities;
+import org.openide.windows.TopComponent;
+import org.openide.nodes.Node;
 
 /**
  *
@@ -94,108 +104,269 @@ public class GenPanel extends javax.swing.JPanel {
     private void nfButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nfButtonActionPerformed
         // TODO add your handling code here:
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
-                panels.add(new GenwizardWizardPanel1());
-                panels.add(new GenwizardWizardPanel2());
-                String[] steps = new String[panels.size()];
-                for (int i = 0; i < panels.size(); i++) {
-                    Component c = panels.get(i).getComponent();
-                    // Default step name to component name of panel.
-                    steps[i] = c.getName();
-                    if (c instanceof JComponent) { // assume Swing components
-                        JComponent jc = (JComponent) c;
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
-                        jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, true);
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, true);
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
-                    }
-                }
-                WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
-                // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
-                wiz.setTitleFormat(new MessageFormat("{0}"));
-                wiz.setTitle("New Files");
-                if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-                    // do something
-                    String name = (String) wiz.getProperty("name");
-                    int selection = (Integer) wiz.getProperty("selection");
-                    String path;
-                    switch (selection) {
-                        case 0:
-                            path = "PROJECT_ROOT/application/models/";
-                            try {
-                                File file = new File(path + name + ".php");
-                                FileWriter fw;
-                                if (file.exists()) {
-                                    fw = new FileWriter(file, true);//if file exists append to file. Works fine.
-                                } else {
-                                    fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
-                                }
-                                fw.close();
-                            } catch (Exception ex) {
-                                System.out.println("Exception: Not working!!");
-                            }
-                            break;
-                        case 1:
-                            path = "PROJECT_ROOT/application/views/";
-                            try {
-                                File file = new File(path + name + ".php");
-                                FileWriter fw;
-                                if (file.exists()) {
-                                    fw = new FileWriter(file, true);
-                                } else {
-                                    fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
-                                }
-                                fw.close();
-                            } catch (Exception ex) {
-                                System.out.println("Exception: Not working!!");
-                            }
-                            break;
-                        case 2:
-                            path = "PROJECT_ROOT/application/controllers/";
-                            try {
-                                File file = new File(path + name + ".php");
-                                FileWriter fw;
-                                if (file.exists()) {
-                                    fw = new FileWriter(file, true);
-                                } else {
-                                    fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
-                                }
-                                fw.close();
-                            } catch (Exception ex) {
-                                System.out.println("Exception: Not working!!");
-                            }
-                            break;
-                    }
-                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message(name + " " + selection));
+        panels.add(new GenwizardWizardPanel1());
+        String[] steps = new String[panels.size()];
+        for (int i = 0; i < panels.size(); i++) {
+            Component c = panels.get(i).getComponent();
+            // Default step name to component name of panel.
+            steps[i] = c.getName();
+            if (c instanceof JComponent) { // assume Swing components
+                JComponent jc = (JComponent) c;
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
+                jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, true);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, true);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
+            }
+        }
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
+        wiz.setTitleFormat(new MessageFormat("{0}"));
+        wiz.setTitle("New Files");
+        if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
+            // do something
+            String name = (String) wiz.getProperty("name");
+            int selection = (Integer) wiz.getProperty("selection");
+            String path;
+            Lookup lookup = Utilities.actionsGlobalContext();
+            Project project = lookup.lookup(Project.class);
+            if (project == null) {
+                TopComponent activeTC = TopComponent.getRegistry().getActivated();
+                DataObject dataLookup = activeTC.getLookup().lookup(DataObject.class);
+                path = FileUtil.toFile(dataLookup.getPrimaryFile()).getAbsolutePath();
+            } else {
+                FileObject projectDir = project.getProjectDirectory();
+                path = projectDir.getPath();
+            }
+            System.out.println(path);
+            switch (selection) {
+                case 0:
+                    path = path + "/application/models/";
+                    try {
+                        File file = new File(path + name + ".php");
+                        FileWriter fw;
+                        if (file.exists()) {
+                            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
+                        } else {
+                            fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            bw.write("<?php");
+                            bw.newLine();
+                            bw.write("// This is a basic Model generated by the code generator to be taylored to your needs.");
+                            bw.newLine();
+                            bw.newLine();
+                            bw.write("class " + name + " extends CI_Model{");
+                            bw.newLine();
+                            bw.newLine();
+                            bw.write("\t function _construct(){");
+                            bw.newLine();
+                            bw.write("\t\t parent:: _construct();");
+                            bw.newLine();
+                            bw.write("\t}");
+                            bw.newLine();
+                            bw.write("}");
+                            bw.close();
+                            fw.close();
+                        }
 
-                }
+                    } catch (Exception ex) {
+                        DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("Please select project root in the project manager!"));
+                    }
+                    break;
+                case 1:
+                    path = path + "/application/views/";
+                    try {
+                        File file = new File(path + name + ".php");
+                        FileWriter fw;
+                        if (file.exists()) {
+                            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
+                        } else {
+                            fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            bw.newLine();
+                            bw.write("<p> This is a 'Hello World' view created from the code generator to be taylored to your needs.");
+                            bw.close();
+                            fw.close();
+                        }
+
+                    } catch (Exception ex) {
+                        DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("Please select project root in the project manager!"));
+                    }
+                    break;
+                case 2:
+                    path = path + "/application/controllers/";
+                    try {
+                        File file = new File(path + name + ".php");
+                        FileWriter fw;
+                        if (file.exists()) {
+                            DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
+                        } else {
+                            fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            bw.write("<?php");
+                            bw.newLine();
+                            bw.write("// This is a basic controller generated by the code generator to be taylored to your needs.");
+                            bw.newLine();
+                            bw.newLine();
+                            bw.write("defined('BASEPATH') OR exit('No direct script access allowed');");
+                            bw.newLine();bw.newLine();
+                            bw.write("class " + name + " extends Application{");
+                            bw.newLine();bw.newLine();
+                            bw.write("\tpublic function index(){");
+                            bw.newLine();
+                            bw.write("\t}");
+                            bw.newLine();
+                            bw.write("}");
+                            bw.close();
+                            fw.close();
+                        }
+
+                    } catch (Exception ex) {
+                        DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("Please select project root in the project manager!"));
+                    }
+                    break;
+            }
+
+        }
     }//GEN-LAST:event_nfButtonActionPerformed
 
     private void sButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sButtonActionPerformed
         // TODO add your handling code here:
         List<WizardDescriptor.Panel<WizardDescriptor>> panels = new ArrayList<WizardDescriptor.Panel<WizardDescriptor>>();
-                panels.add(new ScaffwizardWizardPanel1());
-                String[] steps = new String[panels.size()];
-                for (int i = 0; i < panels.size(); i++) {
-                    Component c = panels.get(i).getComponent();
-                    // Default step name to component name of panel.
-                    steps[i] = c.getName();
-                    if (c instanceof JComponent) { // assume Swing components
-                        JComponent jc = (JComponent) c;
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
-                        jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, true);
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, true);
-                        jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
-                    }
+        panels.add(new ScaffwizardWizardPanel1());
+        String[] steps = new String[panels.size()];
+        for (int i = 0; i < panels.size(); i++) {
+            Component c = panels.get(i).getComponent();
+            // Default step name to component name of panel.
+            steps[i] = c.getName();
+            if (c instanceof JComponent) { // assume Swing components
+                JComponent jc = (JComponent) c;
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_SELECTED_INDEX, i);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DATA, steps);
+                jc.putClientProperty(WizardDescriptor.PROP_AUTO_WIZARD_STYLE, true);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_DISPLAYED, true);
+                jc.putClientProperty(WizardDescriptor.PROP_CONTENT_NUMBERED, true);
+            }
+        }
+        WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
+        // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
+        wiz.setTitleFormat(new MessageFormat("{0}"));
+        wiz.setTitle("Scaffolding");
+        if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
+            // do something
+            String Dname = (String) wiz.getProperty("Dname");
+            String Tname = (String) wiz.getProperty("Tname");
+            String Path;
+            String Pathmodel;
+            String Pathview;
+            String Pathcontroller;
+            Lookup lookup = Utilities.actionsGlobalContext();
+            Project project = lookup.lookup(Project.class);
+            if (project == null) {
+                TopComponent activeTC = TopComponent.getRegistry().getActivated();
+                DataObject dataLookup = activeTC.getLookup().lookup(DataObject.class);
+                Path = FileUtil.toFile(dataLookup.getPrimaryFile()).getAbsolutePath();
+            } else {
+                FileObject projectDir = project.getProjectDirectory();
+                Path = projectDir.getPath();
+            }
+            Pathmodel = Path + "/application/models/";
+            Pathview = Path + "/application/views/";
+            Pathcontroller = Path + "/application/controllers/";
+            StringBuilder sb = new StringBuilder(Tname);
+            char c = sb.charAt(0);
+            if (Character.isLowerCase(c)) {
+                sb.setCharAt(0, Character.toUpperCase(c));
+            } 
+            String Mname = sb.toString();
+            try {
+                File file = new File(Pathmodel + Mname + ".php");
+                FileWriter fw;
+                if (file.exists()) {
+                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
+                } else {
+                    fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.write("<?php");
+                    bw.newLine();
+                    bw.write("// This is the model created by the code generator for you database information.");
+                    bw.newLine();bw.newLine();
+                    bw.write("class " + Mname + " extends CI_Model{");
+                    bw.newLine();bw.newLine();
+                    bw.write("\tfunction _construct(){");
+                    bw.newLine();
+                    bw.write("\t\t parent:: _construct();");
+                    bw.newLine();
+                    bw.write("\t}");
+                    bw.newLine();bw.newLine();
+                    bw.write("\tfunction all(){");
+                    bw.newLine();
+                    bw.write("\t\t // This functions retrieves all the information from your database table.");
+                    bw.newLine();bw.newLine();
+                    bw.write("\t\t $this->db->order_by('id','desc');");
+                    bw.newLine();
+                    bw.write("\t\t $query = $this->db->get('" + Tname.toLowerCase() +"');");
+                    bw.newLine();
+                    bw.write("\t\t return $query->result_array();");
+                    bw.newLine();
+                    bw.write("\t}");
+                    bw.newLine();
+                    bw.write("}");
+                    bw.close();
+                    fw.close();
                 }
-                WizardDescriptor wiz = new WizardDescriptor(new WizardDescriptor.ArrayIterator<WizardDescriptor>(panels));
-                // {0} will be replaced by WizardDesriptor.Panel.getComponent().getName()
-                wiz.setTitleFormat(new MessageFormat("{0}"));
-                wiz.setTitle("Scaffolding");
-                if (DialogDisplayer.getDefault().notify(wiz) == WizardDescriptor.FINISH_OPTION) {
-                    // do something
+
+            } catch (Exception ex) {
+                DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("Please select project root in the project manager!"));
+            }
+            
+            try {
+                File file = new File(Pathview + "GenView" + ".php");
+                FileWriter fw;
+                if (file.exists()) {
+                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
+                } else {
+                    fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                    BufferedWriter bw = new BufferedWriter(fw);
+                    bw.newLine();
+                    bw.write("<p> This is a 'Hello World' view created for your dabatase information by the code generator to be taylored to your needs. Change the name of the File as needed.</p>");
+                    bw.close();
+                    fw.close();
                 }
+
+            } catch (Exception ex) {
+            
+            }
+            
+            try {
+                File file = new File(Pathcontroller + "GenController" + ".php");
+                FileWriter fw;
+                if (file.exists()) {
+                    DialogDisplayer.getDefault().notify(new NotifyDescriptor.Message("File already exists."));
+                } else {
+                    fw = new FileWriter(file);// If file does not exist. Create it. This throws a FileNotFoundException. Why? 
+                    BufferedWriter bw = new BufferedWriter(fw);
+                            bw.write("<?php");
+                            bw.newLine();
+                            bw.write("// This is a basic controller generated by the code generator to be taylored to your needs.");
+                            bw.newLine();
+                            bw.newLine();
+                            bw.write("defined('BASEPATH') OR exit('No direct script access allowed');");
+                            bw.newLine();bw.newLine();
+                            bw.write("class " + "GenController" + " extends Application{");
+                            bw.newLine();bw.newLine();
+                            bw.write("\tpublic function index(){");
+                            bw.newLine();
+                            bw.write("\t}");
+                            bw.newLine();
+                            bw.write("}");
+                            bw.close();
+                    fw.close();
+                }
+            } catch (Exception ex) {
+            System.out.println(ex);
+            }
+        }
     }//GEN-LAST:event_sButtonActionPerformed
 
 
