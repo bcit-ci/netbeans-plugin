@@ -12,16 +12,14 @@ plugins, and you can get more of them.
 How To Use It
 *************
 
-Invoke the appropriate part of this from your plugin menu.
-
+Tools->Options->CodeIgniter tab
 
 ************
 How It Works
 ************
 
-Magic.
-
-The new plugin wizard will query the plugin portal on the main website
-for categories of available plugins, and for eligible ones in a category.
+It is not fully functioning yet, it aimed to query the plugins from the portal 
+on the main website for categories of available plugins, and for eligible ones 
+in a category.
 
 Compatible plugins are managed on the plugin portal site.
